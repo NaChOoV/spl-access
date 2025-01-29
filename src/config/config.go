@@ -18,6 +18,7 @@ type EnvironmentConfig struct {
 	DbUser     string `env:"DB_USER,required"`
 	DbPassword string `env:"DB_PASSWORD,required"`
 	DbName     string `env:"DB_NAME,required"`
+	DbSSLMode  string `env:"DB_SSL_MODE,required"`
 }
 
 var envConfig *EnvironmentConfig
@@ -43,6 +44,7 @@ func NewEnviromentConfig(lc fx.Lifecycle) *EnvironmentConfig {
 	envConfig.DbUser = os.Getenv("DB_USER")
 	envConfig.DbPassword = os.Getenv("DB_PASSWORD")
 	envConfig.DbName = os.Getenv("DB_NAME")
+	envConfig.DbSSLMode = os.Getenv("DB_SSL_MODE")
 
 	// DebugMode
 	if os.Getenv("DEBUG_MODE") == "true" {

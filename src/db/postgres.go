@@ -15,12 +15,13 @@ func CreatePostgresConnection(lc fx.Lifecycle, envConfig *config.EnvironmentConf
 	if envConfig.DebugMode {
 		options = append(options, ent.Debug())
 	}
-	conn, connError := ent.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=disable",
+	conn, connError := ent.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
 		envConfig.DbHost,
 		envConfig.DbPort,
 		envConfig.DbUser,
 		envConfig.DbName,
-		envConfig.DbPassword),
+		envConfig.DbPassword,
+		envConfig.DbSSLMode),
 		options...)
 
 	// Run the auto migration tool.
