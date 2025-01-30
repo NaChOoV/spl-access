@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"spl-access/src/config"
 	"spl-access/src/dto"
+	"spl-access/src/helpers"
 	"spl-access/src/model"
 	"spl-access/src/repository"
 	"spl-access/src/websocket"
@@ -47,7 +48,8 @@ func (a *AccessService) UpdateAccess() {
 		fmt.Println(err)
 		return
 	}
-	a.access = access
+
+	a.access = helpers.MaskAccessData(access)
 	a.websocketController.BroadcastMessage(access)
 }
 
