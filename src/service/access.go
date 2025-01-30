@@ -50,7 +50,7 @@ func (a *AccessService) UpdateAccess() {
 	}
 
 	a.access = helpers.MaskAccessData(access)
-	a.websocketController.BroadcastMessage(access)
+	a.websocketController.BroadcastMessage(a.access)
 }
 
 func (a *AccessService) GetAccess() *[]model.Access {
