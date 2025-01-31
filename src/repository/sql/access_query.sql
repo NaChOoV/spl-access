@@ -5,7 +5,7 @@ WITH RankedAccess AS (SELECT run,
                       FROM access
                       WHERE entry_at::DATE = CURRENT_DATE
                         AND exit_at IS NULL
-                        AND entry_at + INTERVAL '3 hours' >= NOW()
+                        AND entry_at + INTERVAL '2.5 hours' >= NOW()
                       GROUP BY run, entry_at, exit_at, location)
 SELECT "user".run,
        "user".full_name,
