@@ -76,7 +76,6 @@ func (a *AccessService) GetAccess() *[]model.Access {
 	}
 
 	if !inRange {
-		fmt.Println(chileTime)
 		return &[]model.Access{}
 	}
 	return a.access
