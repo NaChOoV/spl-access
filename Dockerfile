@@ -6,7 +6,12 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=1 GOOS=linux GOARCH=arm64 go build -ldflags="-w -s" -o main main.go
+RUN ARCH=$(uname -m) && \
+    if [ "$ARCH" = "aarch64" ]; then \
+    CGO_ENABLED=1 GOOS=linux GOARCH=arm64 go build -ldflags="-w -s" -o main main.go; \
+    else \
+    go build -ldflags="-w -s" -o main main.go; \
+    fi
 
 # Production
 FROM alpine:latest
