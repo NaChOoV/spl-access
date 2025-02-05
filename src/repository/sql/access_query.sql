@@ -3,8 +3,7 @@ WITH RankedAccess AS (SELECT run,
                              location,
                              ROW_NUMBER() OVER (PARTITION BY run, location ORDER BY entry_at DESC) AS rn
                       FROM access
-                      WHERE entry_at::DATE = CURRENT_DATE
-                        AND exit_at IS NULL
+                      WHERE exit_at IS NULL
                         AND entry_at + INTERVAL '2.5 hours' >= NOW()
                       GROUP BY run, entry_at, exit_at, location)
 SELECT "user".run,
