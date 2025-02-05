@@ -1,4 +1,3 @@
-# Use the official Golang image as the base image
 FROM golang:1.23.4-alpine AS build
 RUN apk add --no-cache gcc musl-dev
 
@@ -17,8 +16,7 @@ RUN ARCH=$(uname -m) && \
 FROM alpine:latest
 WORKDIR /app
 COPY --from=build ./app/main .
-COPY .env .env
 
-EXPOSE 30002
+EXPOSE 8080
 
 CMD ["./main"]
