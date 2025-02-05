@@ -15,6 +15,7 @@ import (
 func CreateFiberServer(
 	lc fx.Lifecycle,
 	accessController *controller.AccessController,
+	mainController *controller.MainController,
 	websocketController *websocket.WebsocketController,
 	authMiddleware *middleware.AuthMiddleware,
 ) {
@@ -24,6 +25,7 @@ func CreateFiberServer(
 	app.Use(logger.New())
 
 	// Setup routes
+	app.Get("/health", mainController.Health)
 	app.Get("/api/access", accessController.GetAccess)
 	app.Post("/api/access", authMiddleware.ValidateAuthHeader, accessController.UpdateOrCreateAccess)
 	app.Get("/ws/access", websocketController.WsAccess)

@@ -26,6 +26,7 @@ func main() {
 		fx.Provide(service.NewAccessService),
 		// Setup controller
 		fx.Provide(controller.NewAccessController),
+		fx.Provide(controller.NewMainController),
 		fx.Provide(websocket.NewWebsocketController),
 		// Setup environment config
 		fx.Provide(config.NewEnviromentConfig),
