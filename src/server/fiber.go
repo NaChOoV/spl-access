@@ -33,7 +33,7 @@ func CreateFiberServer(
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {
 			// TODO: switch the port to an env variable
-			go app.Listen(":30002")
+			go app.Listen(":8000")
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {
