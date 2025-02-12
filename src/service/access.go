@@ -55,27 +55,9 @@ func (a *AccessService) UpdateAccess() {
 }
 
 func (a *AccessService) GetAccess() *[]model.Access {
-	loc, _ := time.LoadLocation("America/Santiago")
-	chileTime := time.Now().In(loc)
-	wd, hr, min := chileTime.Weekday(), chileTime.Hour(), chileTime.Minute()
 
-	inRange := false
-	switch wd {
-	case time.Monday, time.Tuesday, time.Wednesday, time.Thursday, time.Friday:
-		if ((hr > 6) || (hr == 6 && min >= 30)) && (hr < 23) {
-			inRange = true
-		}
-	case time.Saturday:
-		if hr >= 9 && hr < 20 {
-			inRange = true
-		}
-	case time.Sunday:
-		if hr >= 9 && hr < 14 {
-			inRange = true
-		}
-	}
-
-	if !inRange {
+	serverTime := time.Now()
+	if helpers.IsSleepTime(serverTime) {
 		return &[]model.Access{}
 	}
 	return a.access

@@ -3,6 +3,7 @@ package helpers
 import (
 	"spl-access/src/model"
 	"strings"
+	"time"
 )
 
 func maskString(str string, keepStart, keepEnd int) string {
@@ -54,4 +55,32 @@ func MaskAccessData(accesses *[]model.Access) *[]model.Access {
 	}
 
 	return &maskedAccesses
+}
+
+func IsSleepTime(timeToCheck time.Time) bool {
+	if timeToCheck.Location() == nil {
+		timeToCheck = timeToCheck.UTC()
+	}
+
+	location, _ := time.LoadLocation("America/Santiago")
+	chileTime := timeToCheck.In(location)
+	wd, hr, min := chileTime.Weekday(), chileTime.Hour(), chileTime.Minute()
+
+	switch wd {
+	case time.Monday, time.Tuesday, time.Wednesday, time.Thursday, time.Friday:
+		if ((hr > 6) || (hr == 6 && min >= 30)) && (hr < 23) {
+			return true
+		}
+	case time.Saturday:
+		if hr >= 9 && hr < 20 {
+			return true
+		}
+	case time.Sunday:
+		if hr >= 9 && hr < 14 {
+			return true
+		}
+	}
+
+	return false
+
 }
