@@ -56,8 +56,8 @@ func (a *AccessService) UpdateAccess() {
 
 func (a *AccessService) GetAccess() *[]model.Access {
 
-	serverTime := time.Now()
-	if helpers.IsSleepTime(serverTime) {
+	utcTime := time.Now().UTC()
+	if helpers.IsChileSleepTime(utcTime, a.config.Zone) {
 		return &[]model.Access{}
 	}
 	return a.access

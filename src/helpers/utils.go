@@ -57,30 +57,32 @@ func MaskAccessData(accesses *[]model.Access) *[]model.Access {
 	return &maskedAccesses
 }
 
-func IsSleepTime(timeToCheck time.Time) bool {
-	if timeToCheck.Location() == nil {
-		timeToCheck = timeToCheck.UTC()
+func IsChileSleepTime(utcTime time.Time, zone string) bool {
+	var location *time.Location
+	switch zone {
+	case "GMT-3":
+		location = time.FixedZone("GMT-3", -3*60*60)
+	case "GMT-4":
+		location = time.FixedZone("GMT-4", -4*60*60)
 	}
 
-	location, _ := time.LoadLocation("America/Santiago")
-	chileTime := timeToCheck.In(location)
+	chileTime := utcTime.In(location)
 	wd, hr, min := chileTime.Weekday(), chileTime.Hour(), chileTime.Minute()
 
 	switch wd {
 	case time.Monday, time.Tuesday, time.Wednesday, time.Thursday, time.Friday:
 		if ((hr > 6) || (hr == 6 && min >= 30)) && (hr < 23) {
-			return true
+			return false
 		}
 	case time.Saturday:
 		if hr >= 9 && hr < 20 {
-			return true
+			return false
 		}
 	case time.Sunday:
 		if hr >= 9 && hr < 14 {
-			return true
+			return false
 		}
 	}
 
-	return false
-
+	return true
 }

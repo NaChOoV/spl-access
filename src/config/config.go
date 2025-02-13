@@ -19,6 +19,8 @@ type EnvironmentConfig struct {
 	DbPassword string `env:"DB_PASSWORD,required"`
 	DbName     string `env:"DB_NAME,required"`
 	DbSSLMode  string `env:"DB_SSL_MODE,required"`
+
+	Zone string `env:"ZONE"`
 }
 
 var envConfig *EnvironmentConfig
@@ -51,6 +53,12 @@ func NewEnviromentConfig(lc fx.Lifecycle) *EnvironmentConfig {
 		envConfig.DebugMode = true
 	} else {
 		envConfig.DebugMode = false
+	}
+
+	// Zone
+	envConfig.Zone = os.Getenv("ZONE")
+	if envConfig.Zone == "" {
+		envConfig.Zone = "GMT-3"
 	}
 
 	lc.Append(fx.Hook{
