@@ -15,7 +15,8 @@ RUN ARCH=$(uname -m) && \
 # Production
 FROM alpine:latest
 WORKDIR /app
-COPY --from=build ./app/main .
+COPY --from=build /app/main .
+COPY --from=build /app/src/repository/sql/*.sql /app/src/repository/sql/
 
 EXPOSE 8000
 
