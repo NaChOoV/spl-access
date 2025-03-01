@@ -50,8 +50,13 @@ func (a *AccessService) UpdateAccess() {
 		return
 	}
 
-	a.access = helpers.MaskAccessData(access)
-	a.websocketController.BroadcastMessage(a.access)
+	a.access = access
+	if len(*access) == 0 {
+		return
+	}
+
+	obfuscateAccess := helpers.MaskAccessData(access)
+	a.websocketController.BroadcastMessage(obfuscateAccess)
 }
 
 func (a *AccessService) GetAccess() *[]model.Access {
