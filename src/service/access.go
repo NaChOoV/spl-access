@@ -8,7 +8,6 @@ import (
 	"spl-access/src/model"
 	"spl-access/src/repository"
 	"spl-access/src/websocket"
-	"time"
 )
 
 type AccessService struct {
@@ -51,20 +50,12 @@ func (a *AccessService) UpdateAccess() {
 	}
 
 	a.access = access
-	if len(*access) == 0 {
-		return
-	}
-
 	obfuscateAccess := helpers.MaskAccessData(access)
+
 	a.websocketController.BroadcastMessage(obfuscateAccess)
 }
 
-func (a *AccessService) GetAccess() *[]model.Access {
-
-	utcTime := time.Now().UTC()
-	if helpers.IsChileSleepTime(utcTime, a.config.Zone) {
-		return &[]model.Access{}
-	}
+func (a *AccessService) GetTodayAccess() *[]model.Access {
 	return a.access
 }
 

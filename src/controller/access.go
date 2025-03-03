@@ -1,9 +1,12 @@
 package controller
 
 import (
+	"spl-access/src/config"
 	"spl-access/src/dto"
 	"spl-access/src/helpers"
+	"spl-access/src/model"
 	"spl-access/src/service"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -11,14 +14,19 @@ import (
 
 type AccessController struct {
 	Validator     *validator.Validate
-	AccessService *service.AccessService
+	accessService *service.AccessService
+	config        *config.EnvironmentConfig
 }
 
-func NewAccessController(accessService *service.AccessService) *AccessController {
+func NewAccessController(
+	accessService *service.AccessService,
+	config *config.EnvironmentConfig,
+) *AccessController {
 	return &AccessController{
 		// TODO: Move validator to a global DI scope
 		Validator:     validator.New(),
-		AccessService: accessService,
+		accessService: accessService,
+		config:        config,
 	}
 }
 
@@ -38,7 +46,7 @@ func (a *AccessController) UpdateOrCreateAccess(c *fiber.Ctx) error {
 		})
 	}
 
-	err := a.AccessService.UpdateOrCreateAccess(accessRequest)
+	err := a.accessService.UpdateOrCreateAccess(accessRequest)
 	if err != nil {
 		return helpers.InternalError(c, err)
 	}
@@ -47,14 +55,29 @@ func (a *AccessController) UpdateOrCreateAccess(c *fiber.Ctx) error {
 }
 
 func (a *AccessController) GetObfuscateAccess(c *fiber.Ctx) error {
-	access := a.AccessService.GetAccess()
-	obfuscateAccess := helpers.MaskAccessData(access)
+	utcTime := time.Now().UTC()
+	var accesses *[]model.Access
+
+	if helpers.IsChileSleepTime(utcTime, a.config.Zone) {
+		accesses = &[]model.Access{}
+	} else {
+		accesses = a.accessService.GetTodayAccess()
+	}
+
+	if len(*accesses) == 0 {
+		return c.JSON(fiber.Map{"data": []model.Access{}})
+	}
+
+	obfuscateAccess := helpers.MaskAccessData(accesses)
 
 	return c.JSON(fiber.Map{"data": obfuscateAccess})
 }
 
 func (a *AccessController) GetAccess(c *fiber.Ctx) error {
-	access := a.AccessService.GetAccess()
+	access := a.accessService.GetTodayAccess()
+	if len(*access) == 0 {
+		return c.JSON(fiber.Map{"data": []model.Access{}})
+	}
 
 	return c.JSON(fiber.Map{"data": access})
 }
