@@ -86,3 +86,23 @@ func IsChileSleepTime(utcTime time.Time, zone string) bool {
 
 	return true
 }
+
+// KeyExtractorFunc defines a function type for extracting a key from any type
+type KeyExtractorFunc[T any] func(item T) string
+
+// RemoveDuplicatesGeneric is a generic function to remove duplicates from any slice
+// based on a key extraction function
+func RemoveDuplicatesGeneric[T any](items []T, keyExtractor KeyExtractorFunc[T]) []T {
+	seen := make(map[string]bool)
+	var result []T
+
+	for _, item := range items {
+		key := keyExtractor(item)
+		if !seen[key] {
+			seen[key] = true
+			result = append(result, item)
+		}
+	}
+
+	return result
+}
