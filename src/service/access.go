@@ -11,14 +11,14 @@ import (
 )
 
 type AccessService struct {
-	accessRepository    *repository.AccessRepository
+	accessRepository    repository.AccessRepository
 	websocketController *websocket.WebsocketController
 	config              *config.EnvironmentConfig
 	access              *[]model.Access
 }
 
 func NewAccessService(
-	accessRepository *repository.AccessRepository,
+	accessRepository repository.AccessRepository,
 	websocketController *websocket.WebsocketController,
 	config *config.EnvironmentConfig,
 ) *AccessService {

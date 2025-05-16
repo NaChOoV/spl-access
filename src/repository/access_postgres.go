@@ -9,26 +9,26 @@ import (
 	"spl-access/src/model"
 )
 
-type AccessRepository struct {
+type PostgresAccess struct {
 	conn *ent.Client
 	ctx  *context.Context
 
 	userRepository *UserRepository
 }
 
-func NewAccessRepository(
+func NewPostgresAccess(
 	conn *ent.Client,
 	ctx *context.Context,
 	userRepository *UserRepository,
-) *AccessRepository {
-	return &AccessRepository{
+) *PostgresAccess {
+	return &PostgresAccess{
 		conn:           conn,
 		ctx:            ctx,
 		userRepository: userRepository,
 	}
 }
 
-func (a *AccessRepository) UpdateOrCreateAccess(access dto.AccessArrayDto) error {
+func (a *PostgresAccess) UpdateOrCreateAccess(access dto.AccessArrayDto) error {
 
 	// check users (create non existing)
 	var userMap = make(map[string]dto.UserDto)
@@ -89,7 +89,7 @@ func (a *AccessRepository) UpdateOrCreateAccess(access dto.AccessArrayDto) error
 	return nil
 }
 
-func (a *AccessRepository) GetAccess() (*[]model.Access, error) {
+func (a *PostgresAccess) GetAccess() (*[]model.Access, error) {
 	sqlFile, err := os.ReadFile("src/repository/sql/access_query.sql")
 	if err != nil {
 		return nil, err

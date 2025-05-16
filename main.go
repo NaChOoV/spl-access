@@ -18,7 +18,12 @@ func main() {
 		// Setup database
 		fx.Provide(db.CreatePostgresConnection),
 		// Setup repository
-		fx.Provide(repository.NewAccessRepository),
+		fx.Provide(
+			fx.Annotate(
+				repository.NewPostgresAccess,
+				fx.As(new(repository.AccessRepository)),
+			),
+		),
 		fx.Provide(repository.NewUserRepository),
 		// Setup background context
 		fx.Provide(config.NewContextBackground),
