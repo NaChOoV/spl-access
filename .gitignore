@@ -5,6 +5,14 @@
 *.so
 *.dylib
 
+# Ignore common Go executable outputs
+/main
+/app
+/server
+/spl-access
+/api
+tmp/main
+
 # Test binary, built with `go test -c`
 *.test
 
@@ -20,3 +28,8 @@ go.work.sum
 
 # env file
 .env
+.env.*
+
+# Log files
+*.log
+log/
