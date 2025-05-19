@@ -66,11 +66,12 @@ go run main.go
 
 #### **Pending**
 - [ ] **Features**
+  - [ ] Implement Repository Interface to Decouple the database layer from the business logic and migrate to BigQuery.
   - [ ] Create a CronJob to remove garbage data from the database.
   - [ ] Calculate the mean time of each person base on historic access data.
   - [ ] Calculate the total people on a place base in time interval.
     - [ ] Create an endpoint to show the data, filtered by date range.
 
 - [ ] **Testing**
-  - [ ] Create unit test.
+  - [ ] Create Unit Test.
   - [ ] Configure CI.
