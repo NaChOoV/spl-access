@@ -7,5 +7,5 @@ import (
 
 type AccessRepository interface {
 	GetAccess() (*[]model.Access, error)
-	UpdateOrCreateAccess(access dto.AccessArrayDto) error
+	UpdateOrCreateAccess(access *[]dto.AccessDto) error
 }

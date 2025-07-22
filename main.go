@@ -32,7 +32,13 @@ func main() {
 		// Setup controller
 		fx.Provide(controller.NewAccessController),
 		fx.Provide(controller.NewMainController),
-		fx.Provide(websocket.NewWebsocketController),
+		// Setup websocket
+		fx.Provide(
+			fx.Annotate(
+				websocket.NewAccessWebsocket,
+				fx.As(new(websocket.AccessWb)),
+			),
+		),
 		// Setup environment config
 		fx.Provide(config.NewEnviromentConfig),
 		fx.Provide(middleware.NewAuthMiddleware),

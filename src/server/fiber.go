@@ -16,8 +16,8 @@ func CreateFiberServer(
 	lc fx.Lifecycle,
 	accessController *controller.AccessController,
 	mainController *controller.MainController,
-	websocketController *websocket.WebsocketController,
 	authMiddleware *middleware.AuthMiddleware,
+	accessWebsocket websocket.AccessWb,
 ) {
 	app := fiber.New()
 
@@ -29,7 +29,7 @@ func CreateFiberServer(
 	app.Get("/api/access", accessController.GetObfuscateAccess)
 	app.Get("/api/access/complete", authMiddleware.ValidateAuthHeader, accessController.GetAccess)
 	app.Post("/api/access", authMiddleware.ValidateAuthHeader, accessController.UpdateOrCreateAccess)
-	app.Get("/ws/access", websocketController.WsAccess)
+	app.Get("/ws/access", func(c *fiber.Ctx) error { return accessWebsocket.Upgrade(c) })
 
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {

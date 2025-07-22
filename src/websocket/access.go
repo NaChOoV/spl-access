@@ -8,18 +8,23 @@ import (
 	"github.com/gofiber/websocket/v2"
 )
 
-type WebsocketController struct {
+type AccessWb interface {
+	BroadcastMessage(message any)
+	Upgrade(c *any) error
+}
+
+type AccessWebsocket struct {
 	connections map[*websocket.Conn]bool
 	connLock    sync.RWMutex
 }
 
-func NewWebsocketController() *WebsocketController {
-	return &WebsocketController{
+func NewAccessWebsocket() *AccessWebsocket {
+	return &AccessWebsocket{
 		connections: make(map[*websocket.Conn]bool),
 	}
 }
 
-func (a *WebsocketController) BroadcastMessage(message interface{}) {
+func (a *AccessWebsocket) BroadcastMessage(message any) {
 	a.connLock.RLock()
 	defer a.connLock.RUnlock()
 
@@ -30,7 +35,7 @@ func (a *WebsocketController) BroadcastMessage(message interface{}) {
 	}
 }
 
-func (a *WebsocketController) WsAccess(c *fiber.Ctx) error {
+func (a *AccessWebsocket) Upgrade(c *fiber.Ctx) error {
 	return websocket.New(func(c *websocket.Conn) {
 		// Register connection
 		a.connLock.Lock()

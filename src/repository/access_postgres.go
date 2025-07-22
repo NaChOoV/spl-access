@@ -28,16 +28,16 @@ func NewPostgresAccess(
 	}
 }
 
-func (a *PostgresAccess) UpdateOrCreateAccess(access dto.AccessArrayDto) error {
+func (a *PostgresAccess) UpdateOrCreateAccess(access *[]dto.AccessDto) error {
 
 	// check users (create non existing)
 	var userMap = make(map[string]dto.UserDto)
-	for _, access := range access.Data {
-		if _, exists := userMap[access.Run]; !exists {
-			userMap[access.Run] = dto.UserDto{
-				Run:        access.Run,
-				ExternalId: access.ExternalId,
-				FullName:   access.FullName,
+	for _, accessItem := range *access {
+		if _, exists := userMap[accessItem.ExternalId]; !exists {
+			userMap[accessItem.ExternalId] = dto.UserDto{
+				Run:        accessItem.Run,
+				ExternalId: accessItem.ExternalId,
+				FullName:   accessItem.FullName,
 			}
 		}
 	}
@@ -57,8 +57,8 @@ func (a *PostgresAccess) UpdateOrCreateAccess(access dto.AccessArrayDto) error {
 		return err
 	}
 
-	var accessToBulk = make([]*ent.AccessCreate, len(access.Data))
-	for i, access := range access.Data {
+	var accessToBulk = make([]*ent.AccessCreate, len(*access))
+	for i, access := range *access {
 		accessCreate := a.conn.Access.
 			Create().
 			SetRun(access.Run).

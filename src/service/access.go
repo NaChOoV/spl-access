@@ -12,14 +12,14 @@ import (
 
 type AccessService struct {
 	accessRepository    repository.AccessRepository
-	websocketController *websocket.WebsocketController
+	websocketController websocket.AccessWb
 	config              *config.EnvironmentConfig
 	access              *[]model.Access
 }
 
 func NewAccessService(
 	accessRepository repository.AccessRepository,
-	websocketController *websocket.WebsocketController,
+	websocketController websocket.AccessWb,
 	config *config.EnvironmentConfig,
 ) *AccessService {
 	return &AccessService{
@@ -34,7 +34,8 @@ func (a *AccessService) UpdateOrCreateAccess(access dto.AccessArrayDto) error {
 	cleanedAccess := helpers.RemoveDuplicatesGeneric(access.Data, func(entry dto.AccessDto) string {
 		return entry.Run + entry.EntryAt.String()
 	})
-	err := a.accessRepository.UpdateOrCreateAccess(dto.AccessArrayDto{Data: cleanedAccess})
+
+	err := a.accessRepository.UpdateOrCreateAccess(&cleanedAccess)
 	if err != nil {
 		return err
 	}
