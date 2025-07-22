@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
@@ -39,10 +40,10 @@ type MockWebsocketController struct {
 func (m *MockWebsocketController) BroadcastMessage(data any) {
 	m.Called(data)
 }
-
-func (m *MockWebsocketController) Upgrade(c *any) error {
+func (m *MockWebsocketController) Upgrade(c *fiber.Ctx) error {
 	args := m.Called(c)
 	return args.Error(0)
+}
 }
 
 func TestUpdateAccess(t *testing.T) {

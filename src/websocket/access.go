@@ -10,7 +10,7 @@ import (
 
 type AccessWb interface {
 	BroadcastMessage(message any)
-	Upgrade(c *any) error
+	Upgrade(c *fiber.Ctx) error
 }
 
 type AccessWebsocket struct {
