@@ -44,7 +44,6 @@ func (m *MockWebsocketController) Upgrade(c *fiber.Ctx) error {
 	args := m.Called(c)
 	return args.Error(0)
 }
-}
 
 func TestUpdateAccess(t *testing.T) {
 	mockConfig := &config.EnvironmentConfig{}
