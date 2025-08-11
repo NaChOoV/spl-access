@@ -30,6 +30,9 @@ go.work.sum
 .env
 .env.*
 
+# JSON files (credentials, configs)
+*.json
+
 # Log files
 *.log
 log/

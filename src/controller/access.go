@@ -46,7 +46,7 @@ func (a *AccessController) UpdateOrCreateAccess(c *fiber.Ctx) error {
 		})
 	}
 
-	err := a.accessService.UpdateOrCreateAccess(accessRequest)
+	err := a.accessService.UpdateOrCreateAccess(c.UserContext(), accessRequest)
 	if err != nil {
 		return helpers.InternalError(c, err)
 	}

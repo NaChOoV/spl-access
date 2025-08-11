@@ -11,14 +11,15 @@ import (
 )
 
 type EnvironmentConfig struct {
-	AuthString string `env:"AUTH_STRING,required"`
-	DebugMode  bool   `env:"DEBUG_MODE"`
-	DbHost     string `env:"DB_HOST,required"`
-	DbPort     string `env:"DB_PORT,required"`
-	DbUser     string `env:"DB_USER,required"`
-	DbPassword string `env:"DB_PASSWORD,required"`
-	DbName     string `env:"DB_NAME,required"`
-	DbSSLMode  string `env:"DB_SSL_MODE,required"`
+	AuthString        string `env:"AUTH_STRING,required"`
+	DebugMode         bool   `env:"DEBUG_MODE"`
+	DbHost            string `env:"DB_HOST"`
+	DbPort            string `env:"DB_PORT"`
+	DbUser            string `env:"DB_USER"`
+	DbPassword        string `env:"DB_PASSWORD"`
+	DbName            string `env:"DB_NAME"`
+	DbSSLMode         string `env:"DB_SSL_MODE"`
+	BigQueryProjectID string `env:"BIG_QUERY_PROJECT_ID,required"`
 
 	Zone string `env:"ZONE"`
 }
@@ -47,6 +48,9 @@ func NewEnviromentConfig(lc fx.Lifecycle) *EnvironmentConfig {
 	envConfig.DbPassword = os.Getenv("DB_PASSWORD")
 	envConfig.DbName = os.Getenv("DB_NAME")
 	envConfig.DbSSLMode = os.Getenv("DB_SSL_MODE")
+
+	// BigQueryProjectID
+	envConfig.BigQueryProjectID = os.Getenv("BIG_QUERY_PROJECT_ID")
 
 	// DebugMode
 	if os.Getenv("DEBUG_MODE") == "true" {

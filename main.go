@@ -16,15 +16,20 @@ import (
 func main() {
 	fx.New(
 		// Setup database
-		fx.Provide(db.CreatePostgresConnection),
+		fx.Provide(db.CreateBigQueryConnection),
 		// Setup repository
 		fx.Provide(
 			fx.Annotate(
-				repository.NewPostgresAccess,
+				repository.NewBigQueryAccess,
 				fx.As(new(repository.AccessRepository)),
 			),
 		),
-		fx.Provide(repository.NewUserRepository),
+		fx.Provide(
+			fx.Annotate(
+				repository.NewBigQueryUser,
+				fx.As(new(repository.UserRepository)),
+			),
+		),
 		// Setup background context
 		fx.Provide(config.NewContextBackground),
 		// Setup service
@@ -43,8 +48,8 @@ func main() {
 		fx.Provide(config.NewEnviromentConfig),
 		fx.Provide(middleware.NewAuthMiddleware),
 		fx.Invoke(server.CreateFiberServer),
-		fx.Invoke(func(accessService *service.AccessService) {
-			accessService.UpdateAccess()
-		}),
+		// fx.Invoke(func(accessService *service.AccessService) {
+		// 	accessService.UpdateAccess()
+		// }),
 	).Run()
 }

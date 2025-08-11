@@ -13,13 +13,13 @@ type PostgresAccess struct {
 	conn *ent.Client
 	ctx  *context.Context
 
-	userRepository *UserRepository
+	userRepository UserRepository
 }
 
 func NewPostgresAccess(
 	conn *ent.Client,
 	ctx *context.Context,
-	userRepository *UserRepository,
+	userRepository UserRepository,
 ) *PostgresAccess {
 	return &PostgresAccess{
 		conn:           conn,
@@ -28,7 +28,7 @@ func NewPostgresAccess(
 	}
 }
 
-func (a *PostgresAccess) UpdateOrCreateAccess(access *[]dto.AccessDto) error {
+func (a *PostgresAccess) UpdateOrCreateAccess(ctx context.Context, access *[]dto.AccessDto) error {
 
 	// check users (create non existing)
 	var userMap = make(map[string]dto.UserDto)
@@ -52,7 +52,7 @@ func (a *PostgresAccess) UpdateOrCreateAccess(access *[]dto.AccessDto) error {
 		return err
 	}
 
-	err = a.userRepository.CheckUsers(users, tx)
+	err = a.userRepository.CheckUsers(ctx, users, tx)
 	if err != nil {
 		return err
 	}

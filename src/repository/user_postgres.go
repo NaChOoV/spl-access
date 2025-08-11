@@ -6,22 +6,29 @@ import (
 	"spl-access/src/dto"
 )
 
-type UserRepository struct {
+type UserPostgres struct {
 	conn *ent.Client
 	ctx  *context.Context
 }
 
-func NewUserRepository(
+func NewUserPostgres(
 	conn *ent.Client,
 	ctx *context.Context,
-) *UserRepository {
-	return &UserRepository{
+) *UserPostgres {
+	return &UserPostgres{
 		conn: conn,
 		ctx:  ctx,
 	}
 }
 
-func (u *UserRepository) CheckUsers(users []*dto.UserDto, tx *ent.Tx) error {
+func (u *UserPostgres) CheckUsers(users []*dto.UserDto, tx ...any) error {
+	var transaction *ent.Tx
+	if len(tx) > 0 && tx[0] != nil {
+		if entTx, ok := tx[0].(*ent.Tx); ok {
+			transaction = entTx
+		}
+	}
+
 	var usersToBulk = make([]*ent.UserCreate, len(users))
 	for i, user := range users {
 		usersToBulk[i] = u.conn.User.
@@ -31,14 +38,14 @@ func (u *UserRepository) CheckUsers(users []*dto.UserDto, tx *ent.Tx) error {
 			SetExternalID(user.ExternalId)
 	}
 
-	if tx != nil {
-		err := tx.User.
+	if transaction != nil {
+		err := transaction.User.
 			CreateBulk(usersToBulk...).
 			OnConflictColumns("external_id", "run").
 			UpdateNewValues().
 			Exec(*u.ctx)
 		if err != nil {
-			tx.Rollback()
+			transaction.Rollback()
 			return err
 		}
 	} else {
