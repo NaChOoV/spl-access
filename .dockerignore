@@ -32,7 +32,6 @@
 **/go.work.sum
 
 # Environments
-**/.env
 **/.venv
 
 # flyctl launch added from .idea/.gitignore

@@ -15,7 +15,7 @@ RUN ARCH=$(uname -m) && \
 FROM alpine:latest
 WORKDIR /app
 COPY --from=build /app/main .
-COPY .env .env
+COPY --from=build /app/.env .
 
 # Postgres
 COPY --from=build /app/src/repository/sql/*.sql /app/src/repository/sql/
