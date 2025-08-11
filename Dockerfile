@@ -1,4 +1,4 @@
-FROM golang:1.23.4-alpine AS build
+FROM golang:1.24.6-alpine AS build
 RUN apk add --no-cache gcc musl-dev
 
 WORKDIR /app
@@ -12,12 +12,15 @@ RUN ARCH=$(uname -m) && \
     go build -ldflags="-w -s" -o main main.go; \
     fi
 
-# Production
 FROM alpine:latest
 WORKDIR /app
 COPY --from=build /app/main .
-COPY --from=build /app/src/repository/sql/*.sql /app/src/repository/sql/
 
+# Postgres
+COPY --from=build /app/src/repository/sql/*.sql /app/src/repository/sql/
+# BigQuery
+COPY --from=build /app/src/repository/bigquery/*.sql /app/src/repository/bigquery/
+COPY --from=build /app/credentials.json .
 EXPOSE 8000
 
 CMD ["./main"]
