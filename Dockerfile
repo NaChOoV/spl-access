@@ -20,7 +20,6 @@ COPY --from=build /app/main .
 COPY --from=build /app/src/repository/sql/*.sql /app/src/repository/sql/
 # BigQuery
 COPY --from=build /app/src/repository/bigquery/*.sql /app/src/repository/bigquery/
-COPY --from=build /app/credentials.json .
 EXPOSE 8000
 
 CMD ["./main"]
