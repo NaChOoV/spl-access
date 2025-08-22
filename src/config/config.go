@@ -12,6 +12,8 @@ import (
 
 type EnvironmentConfig struct {
 	AuthString        string `env:"AUTH_STRING,required"`
+	SourceBaseURL     string `env:"SOURCE_BASE_URL,required"`
+	SourceAuthString  string `env:"SOURCE_AUTH_STRING,required"`
 	DebugMode         bool   `env:"DEBUG_MODE"`
 	DbHost            string `env:"DB_HOST"`
 	DbPort            string `env:"DB_PORT"`
@@ -40,6 +42,10 @@ func NewEnviromentConfig(lc fx.Lifecycle) *EnvironmentConfig {
 	}
 	// AuthString
 	envConfig.AuthString = os.Getenv("AUTH_STRING")
+
+	// Source service
+	envConfig.SourceBaseURL = os.Getenv("SOURCE_BASE_URL")
+	envConfig.SourceAuthString = os.Getenv("SOURCE_AUTH_STRING")
 
 	// Database
 	envConfig.DbHost = os.Getenv("DB_HOST")

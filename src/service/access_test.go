@@ -20,12 +20,12 @@ type MockAccessRepository struct {
 	mock.Mock
 }
 
-func (m *MockAccessRepository) GetAccess(ctx context.Context) (*[]model.Access, error) {
+func (m *MockAccessRepository) GetAccess(ctx context.Context) ([]*model.Access, error) {
 	args := m.Called(ctx)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}
-	return args.Get(0).(*[]model.Access), args.Error(1)
+	return args.Get(0).([]*model.Access), args.Error(1)
 
 }
 
@@ -51,32 +51,32 @@ func TestUpdateAccess(t *testing.T) {
 	mockConfig := &config.EnvironmentConfig{}
 
 	now := time.Now()
-	originalAccessData := &[]model.Access{
+	originalAccessData := []*model.Access{
 		{Run: "11111111-1", FullName: "Test User One", Location: "Location1", EntryAt: now},
 		{Run: "22222222-2", FullName: "Test User Two", Location: "Location2", EntryAt: now.Add(-time.Hour)},
 	}
-	emptyAccessData := &[]model.Access{}
+	emptyAccessData := []*model.Access{}
 
 	unexpectedError := errors.New("unexpected error")
 
 	expectedMaskedOriginalData := helpers.MaskAccessData(originalAccessData)
 	expectedMaskedEmptyData := helpers.MaskAccessData(emptyAccessData)
-	preExistingAccessState := &[]model.Access{{Run: "PRE-EXISTING-000", FullName: "Old Data"}}
+	preExistingAccessState := []*model.Access{{Run: "PRE-EXISTING-000", FullName: "Old Data"}}
 
 	testCases := []struct {
 		name                  string
 		setupMocks            func(mockRepo *MockAccessRepository, mockWS *MockWebsocketController)
-		initialServiceAccess  *[]model.Access
-		expectedServiceAccess *[]model.Access
+		initialServiceAccess  []*model.Access
+		expectedServiceAccess []*model.Access
 	}{
 		{
 			setupMocks: func(mockRepo *MockAccessRepository, mockWS *MockWebsocketController) {
-				dataCopy := make([]model.Access, len(*originalAccessData))
-				copy(dataCopy, *originalAccessData)
-				mockRepo.On("GetAccess", mock.Anything).Return(&dataCopy, nil).Once()
+				dataCopy := make([]*model.Access, len(originalAccessData))
+				copy(dataCopy, originalAccessData)
+				mockRepo.On("GetAccess", mock.Anything).Return(dataCopy, nil).Once()
 				mockWS.On("BroadcastMessage", expectedMaskedOriginalData).Return().Once()
 			},
-			initialServiceAccess:  &[]model.Access{},
+			initialServiceAccess:  []*model.Access{},
 			expectedServiceAccess: originalAccessData,
 		},
 		{
@@ -88,7 +88,7 @@ func TestUpdateAccess(t *testing.T) {
 		},
 		{
 			setupMocks: func(mockRepo *MockAccessRepository, mockWS *MockWebsocketController) {
-				mockRepo.On("GetAccess", mock.Anything).Return(&[]model.Access{}, nil).Once()
+				mockRepo.On("GetAccess", mock.Anything).Return([]*model.Access{}, nil).Once()
 				mockWS.On("BroadcastMessage", expectedMaskedEmptyData).Return().Once()
 			},
 			initialServiceAccess:  preExistingAccessState,
@@ -105,14 +105,14 @@ func TestUpdateAccess(t *testing.T) {
 
 			tc.setupMocks(mockRepo, mockWS)
 
-			serviceAccessCopy := make([]model.Access, len(*tc.initialServiceAccess))
-			copy(serviceAccessCopy, *tc.initialServiceAccess)
+			serviceAccessCopy := make([]*model.Access, len(tc.initialServiceAccess))
+			copy(serviceAccessCopy, tc.initialServiceAccess)
 
 			service := &AccessService{
 				accessRepository:    mockRepo,
 				websocketController: mockWS,
 				config:              mockConfig,
-				access:              &serviceAccessCopy,
+				access:              serviceAccessCopy,
 			}
 
 			service.UpdateAccess(context.Background())

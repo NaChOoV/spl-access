@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"spl-access/src/config"
 	"spl-access/src/controller"
 	"spl-access/src/db"
@@ -9,7 +10,9 @@ import (
 	"spl-access/src/server"
 	"spl-access/src/service"
 	"spl-access/src/websocket"
+	"time"
 
+	"github.com/go-co-op/gocron/v2"
 	"go.uber.org/fx"
 )
 
@@ -34,6 +37,7 @@ func main() {
 		fx.Provide(config.NewContextBackground),
 		// Setup service
 		fx.Provide(service.NewAccessService),
+		fx.Provide(service.NewSourceService),
 		// Setup controller
 		fx.Provide(controller.NewAccessController),
 		fx.Provide(controller.NewMainController),
@@ -48,8 +52,26 @@ func main() {
 		fx.Provide(config.NewEnviromentConfig),
 		fx.Provide(middleware.NewAuthMiddleware),
 		fx.Invoke(server.CreateFiberServer),
-		// fx.Invoke(func(accessService *service.AccessService) {
-		// 	accessService.UpdateAccess()
-		// }),
+		fx.Invoke(func(accessService *service.AccessService) {
+			s, err := gocron.NewScheduler()
+			if err != nil {
+				fmt.Println("Error creating scheduler:", err)
+				return
+			}
+
+			s.NewJob(
+				gocron.DurationJob(5*time.Second),
+				gocron.NewTask(func() {
+					err := accessService.SyncAccess()
+					if err != nil {
+						fmt.Println("[CRON] Error syncing access:", err)
+						return
+					}
+				}),
+				gocron.WithSingletonMode(gocron.LimitModeReschedule),
+			)
+
+			s.Start()
+		}),
 	).Run()
 }

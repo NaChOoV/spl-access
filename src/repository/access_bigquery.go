@@ -23,11 +23,11 @@ func NewBigQueryAccess(client *bigquery.Client, userRepository UserRepository) *
 	}
 }
 
-func (b *BigQueryAccess) UpdateOrCreateAccess(ctx context.Context, access *[]dto.AccessDto) error {
+func (b *BigQueryAccess) UpdateOrCreateAccess(ctx context.Context, access []*dto.AccessDto) error {
 	var values []string
-	for _, accessDto := range *access {
+	for _, accessDto := range access {
 		exitAtValue := "TIMESTAMP(NULL)"
-		if !accessDto.ExitAt.IsZero() {
+		if accessDto.ExitAt != nil {
 			exitAtValue = fmt.Sprintf("TIMESTAMP('%s')", accessDto.ExitAt.Format(time.RFC3339))
 		}
 
@@ -68,7 +68,7 @@ func (b *BigQueryAccess) UpdateOrCreateAccess(ctx context.Context, access *[]dto
 	return nil
 }
 
-func (b *BigQueryAccess) GetAccess(ctx context.Context) (*[]model.Access, error) {
+func (b *BigQueryAccess) GetAccess(ctx context.Context) ([]*model.Access, error) {
 	bigQueryFile, err := os.ReadFile("src/repository/bigquery/access_get.sql")
 	if err != nil {
 		return nil, err
@@ -80,14 +80,15 @@ func (b *BigQueryAccess) GetAccess(ctx context.Context) (*[]model.Access, error)
 		return nil, fmt.Errorf("failed to read from today_access table: %w", err)
 	}
 
-	var accessList []model.Access
+	var accessList []*model.Access
 	for {
 		var row struct {
-			Run      string    `bigquery:"run"`
-			FullName string    `bigquery:"full_name"`
-			Location int64     `bigquery:"location"`
-			EntryAt  time.Time `bigquery:"entry_at"`
-			ExitAt   time.Time `bigquery:"exit_at"`
+			ExternalId string     `bigquery:"external_id"`
+			Run        string     `bigquery:"run"`
+			FullName   string     `bigquery:"full_name"`
+			Location   int64      `bigquery:"location"`
+			EntryAt    time.Time  `bigquery:"entry_at"`
+			ExitAt     *time.Time `bigquery:"exit_at"`
 		}
 
 		err := it.Next(&row)
@@ -98,15 +99,16 @@ func (b *BigQueryAccess) GetAccess(ctx context.Context) (*[]model.Access, error)
 			return nil, fmt.Errorf("failed to iterate over results: %w", err)
 		}
 
-		access := model.Access{
-			Run:      row.Run,
-			FullName: row.FullName,
-			Location: fmt.Sprintf("%d", row.Location),
-			EntryAt:  row.EntryAt,
-			ExitAt:   row.ExitAt,
+		access := &model.Access{
+			ExternalId: row.ExternalId,
+			Run:        row.Run,
+			FullName:   row.FullName,
+			Location:   fmt.Sprintf("%d", row.Location),
+			EntryAt:    row.EntryAt,
+			ExitAt:     row.ExitAt,
 		}
 		accessList = append(accessList, access)
 	}
 
-	return &accessList, nil
+	return accessList, nil
 }

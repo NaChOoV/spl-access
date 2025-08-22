@@ -7,8 +7,8 @@ import (
 )
 
 type AccessRepository interface {
-	GetAccess(ctx context.Context) (*[]model.Access, error)
-	UpdateOrCreateAccess(ctx context.Context, access *[]dto.AccessDto) error
+	GetAccess(ctx context.Context) ([]*model.Access, error)
+	UpdateOrCreateAccess(ctx context.Context, access []*dto.AccessDto) error
 }
 
 type UserRepository interface {

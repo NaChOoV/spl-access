@@ -15,29 +15,31 @@ import (
 type AccessService struct {
 	accessRepository    repository.AccessRepository
 	userRepository      repository.UserRepository
+	sourceService       *SourceService
 	websocketController websocket.AccessWb
 	config              *config.EnvironmentConfig
-	access              *[]model.Access
+	access              []*model.Access
 }
 
 func NewAccessService(
 	accessRepository repository.AccessRepository,
 	userRepository repository.UserRepository,
+	sourceService *SourceService,
 	websocketController websocket.AccessWb,
 	config *config.EnvironmentConfig,
 ) *AccessService {
 	return &AccessService{
 		accessRepository:    accessRepository,
 		userRepository:      userRepository,
+		sourceService:       sourceService,
 		websocketController: websocketController,
 		config:              config,
-		access:              &[]model.Access{},
+		access:              []*model.Access{},
 	}
 }
 
-func (a *AccessService) UpdateOrCreateAccess(ctx context.Context, access dto.AccessArrayDto) error {
-	// Check Access
-	cleanedAccess := helpers.RemoveDuplicatesGeneric(access.Data, func(entry dto.AccessDto) string {
+func (a *AccessService) UpdateOrCreateAccess(ctx context.Context, access []*dto.AccessDto) error {
+	cleanedAccess := helpers.RemoveDuplicatesGeneric(access, func(entry *dto.AccessDto) string {
 		return entry.ExternalId + entry.Location + entry.EntryAt.String()
 	})
 
@@ -48,7 +50,7 @@ func (a *AccessService) UpdateOrCreateAccess(ctx context.Context, access dto.Acc
 
 	go func() {
 		defer wg.Done()
-		accessErr = a.accessRepository.UpdateOrCreateAccess(ctx, &cleanedAccess)
+		accessErr = a.accessRepository.UpdateOrCreateAccess(ctx, cleanedAccess)
 	}()
 
 	// CheckUsers in goroutine
@@ -90,18 +92,42 @@ func (a *AccessService) UpdateOrCreateAccess(ctx context.Context, access dto.Acc
 }
 
 func (a *AccessService) UpdateAccess(ctx context.Context) {
-
 	access, err := a.accessRepository.GetAccess(ctx)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
 	a.access = access
 	obfuscateAccess := helpers.MaskAccessData(access)
 	a.websocketController.BroadcastMessage(obfuscateAccess)
 }
 
-func (a *AccessService) GetTodayAccess() *[]model.Access {
+func (a *AccessService) GetTodayAccess() []*model.Access {
 	return a.access
+}
+
+func (a *AccessService) SyncAccess() error {
+	ctx := context.Background()
+	helpers.CheckSleepTime(a.config.Zone)
+
+	// Get access from source service
+	access, err := a.sourceService.GetAccess()
+	if err != nil {
+		return err
+	}
+
+	if len(access) == 0 {
+		fmt.Println("No access data received from source service.")
+		return nil
+	}
+
+	// Call UpdateOrCreateAccess with the access response.
+	err = a.UpdateOrCreateAccess(ctx, access)
+	if err != nil {
+		return err
+	}
+
+	// notify notification service
+
+	return nil
 }

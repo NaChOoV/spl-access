@@ -46,7 +46,7 @@ func (a *AccessController) UpdateOrCreateAccess(c *fiber.Ctx) error {
 		})
 	}
 
-	err := a.accessService.UpdateOrCreateAccess(c.UserContext(), accessRequest)
+	err := a.accessService.UpdateOrCreateAccess(c.UserContext(), accessRequest.Data)
 	if err != nil {
 		return helpers.InternalError(c, err)
 	}
@@ -56,15 +56,16 @@ func (a *AccessController) UpdateOrCreateAccess(c *fiber.Ctx) error {
 
 func (a *AccessController) GetObfuscateAccess(c *fiber.Ctx) error {
 	utcTime := time.Now().UTC()
-	var accesses *[]model.Access
+	var accesses []*model.Access
 
 	if helpers.IsChileSleepTime(utcTime, a.config.Zone) {
-		accesses = &[]model.Access{}
+		accesses = []*model.Access{}
 	} else {
+
 		accesses = a.accessService.GetTodayAccess()
 	}
 
-	if len(*accesses) == 0 {
+	if len(accesses) == 0 {
 		return c.JSON(fiber.Map{"data": []model.Access{}})
 	}
 
@@ -74,10 +75,6 @@ func (a *AccessController) GetObfuscateAccess(c *fiber.Ctx) error {
 }
 
 func (a *AccessController) GetAccess(c *fiber.Ctx) error {
-	access := a.accessService.GetTodayAccess()
-	if len(*access) == 0 {
-		return c.JSON(fiber.Map{"data": []model.Access{}})
-	}
-
-	return c.JSON(fiber.Map{"data": access})
+	accessArray := a.accessService.GetTodayAccess()
+	return c.JSON(fiber.Map{"data": accessArray})
 }
