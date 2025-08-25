@@ -29,7 +29,7 @@ func (m *MockAccessRepository) GetAccess(ctx context.Context) ([]*model.Access, 
 
 }
 
-func (m *MockAccessRepository) UpdateOrCreateAccess(ctx context.Context, access *[]dto.AccessDto) error {
+func (m *MockAccessRepository) UpdateOrCreateAccess(ctx context.Context, access []*dto.AccessDto) error {
 	args := m.Called(ctx, access)
 	return args.Error(0)
 }
