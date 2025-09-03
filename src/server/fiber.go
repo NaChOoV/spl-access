@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"spl-access/src/config"
 	"spl-access/src/controller"
 	"spl-access/src/middleware"
 	"spl-access/src/websocket"
@@ -18,6 +19,7 @@ func CreateFiberServer(
 	mainController *controller.MainController,
 	authMiddleware *middleware.AuthMiddleware,
 	accessWebsocket websocket.AccessWb,
+	config *config.EnvironmentConfig,
 ) {
 	app := fiber.New()
 
@@ -33,8 +35,8 @@ func CreateFiberServer(
 
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {
-			// TODO: switch the port to an env variable
-			go app.Listen(":8000")
+			port := config.Port
+			go app.Listen(":" + port)
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {

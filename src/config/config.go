@@ -11,17 +11,20 @@ import (
 )
 
 type EnvironmentConfig struct {
-	AuthString        string `env:"AUTH_STRING,required"`
-	SourceBaseURL     string `env:"SOURCE_BASE_URL,required"`
-	SourceAuthString  string `env:"SOURCE_AUTH_STRING,required"`
-	DebugMode         bool   `env:"DEBUG_MODE"`
-	DbHost            string `env:"DB_HOST"`
-	DbPort            string `env:"DB_PORT"`
-	DbUser            string `env:"DB_USER"`
-	DbPassword        string `env:"DB_PASSWORD"`
-	DbName            string `env:"DB_NAME"`
-	DbSSLMode         string `env:"DB_SSL_MODE"`
-	BigQueryProjectID string `env:"BIG_QUERY_PROJECT_ID,required"`
+	Port                   string `env:"PORT,default=8000"`
+	AuthString             string `env:"AUTH_STRING,required"`
+	SourceBaseURL          string `env:"SOURCE_BASE_URL,required"`
+	SourceAuthString       string `env:"SOURCE_AUTH_STRING,required"`
+	NotificationBaseUrl    string `env:"NOTIFICATION_BASE_URL,required"`
+	NotificationAuthString string `env:"NOTIFICATION_AUTH_STRING,required"`
+	DebugMode              bool   `env:"DEBUG_MODE"`
+	DbHost                 string `env:"DB_HOST"`
+	DbPort                 string `env:"DB_PORT"`
+	DbUser                 string `env:"DB_USER"`
+	DbPassword             string `env:"DB_PASSWORD"`
+	DbName                 string `env:"DB_NAME"`
+	DbSSLMode              string `env:"DB_SSL_MODE"`
+	BigQueryProjectID      string `env:"BIG_QUERY_PROJECT_ID,required"`
 
 	Zone string `env:"ZONE"`
 }
@@ -40,12 +43,23 @@ func NewEnviromentConfig(lc fx.Lifecycle) *EnvironmentConfig {
 	if err != nil {
 		panic(err)
 	}
+
+	// Port
+	envConfig.Port = os.Getenv("PORT")
+	if envConfig.Port == "" {
+		envConfig.Port = "8000"
+	}
+
 	// AuthString
 	envConfig.AuthString = os.Getenv("AUTH_STRING")
 
 	// Source service
 	envConfig.SourceBaseURL = os.Getenv("SOURCE_BASE_URL")
 	envConfig.SourceAuthString = os.Getenv("SOURCE_AUTH_STRING")
+
+	// Notification Service
+	envConfig.NotificationBaseUrl = os.Getenv("NOTIFICATION_BASE_URL")
+	envConfig.NotificationAuthString = os.Getenv("NOTIFICATION_AUTH_STRING")
 
 	// Database
 	envConfig.DbHost = os.Getenv("DB_HOST")

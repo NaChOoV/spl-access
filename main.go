@@ -38,6 +38,7 @@ func main() {
 		// Setup service
 		fx.Provide(service.NewAccessService),
 		fx.Provide(service.NewSourceService),
+		fx.Provide(service.NewNotificationService),
 		// Setup controller
 		fx.Provide(controller.NewAccessController),
 		fx.Provide(controller.NewMainController),

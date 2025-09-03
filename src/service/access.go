@@ -16,6 +16,7 @@ type AccessService struct {
 	accessRepository    repository.AccessRepository
 	userRepository      repository.UserRepository
 	sourceService       *SourceService
+	notificationService *NotificationService
 	websocketController websocket.AccessWb
 	config              *config.EnvironmentConfig
 	access              []*model.Access
@@ -25,6 +26,7 @@ func NewAccessService(
 	accessRepository repository.AccessRepository,
 	userRepository repository.UserRepository,
 	sourceService *SourceService,
+	notificationService *NotificationService,
 	websocketController websocket.AccessWb,
 	config *config.EnvironmentConfig,
 ) *AccessService {
@@ -32,6 +34,7 @@ func NewAccessService(
 		accessRepository:    accessRepository,
 		userRepository:      userRepository,
 		sourceService:       sourceService,
+		notificationService: notificationService,
 		websocketController: websocketController,
 		config:              config,
 		access:              []*model.Access{},
@@ -128,6 +131,10 @@ func (a *AccessService) SyncAccess() error {
 	}
 
 	// notify notification service
+	err = a.notificationService.SendAccess(ctx, a.access)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
