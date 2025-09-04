@@ -130,11 +130,5 @@ func (a *AccessService) SyncAccess() error {
 		return err
 	}
 
-	// notify notification service
-	err = a.notificationService.SendAccess(ctx, a.access)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
