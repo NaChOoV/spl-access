@@ -29,7 +29,7 @@ func CreateFiberServer(
 	// Setup routes
 	app.Get("/health", mainController.Health)
 	app.Get("/api/access", accessController.GetObfuscateAccess)
-	app.Get("/api/access/complete", authMiddleware.ValidateAuthHeader, accessController.GetAccess)
+	app.Get("/api/access/complete", authMiddleware.ValidateAuthHeader, accessController.GetAccessComplete)
 	app.Post("/api/access", authMiddleware.ValidateAuthHeader, accessController.UpdateOrCreateAccess)
 	app.Get("/ws/access", func(c *fiber.Ctx) error { return accessWebsocket.Upgrade(c) })
 

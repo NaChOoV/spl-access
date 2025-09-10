@@ -74,7 +74,7 @@ func (a *AccessController) GetObfuscateAccess(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"data": obfuscateAccess})
 }
 
-func (a *AccessController) GetAccess(c *fiber.Ctx) error {
-	accessArray := a.accessService.GetTodayAccess()
+func (a *AccessController) GetAccessComplete(c *fiber.Ctx) error {
+	accessArray := a.accessService.GetTodayAccessComplete()
 	return c.JSON(fiber.Map{"data": accessArray})
 }

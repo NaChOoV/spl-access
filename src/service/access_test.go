@@ -20,8 +20,8 @@ type MockAccessRepository struct {
 	mock.Mock
 }
 
-func (m *MockAccessRepository) GetAccess(ctx context.Context) ([]*model.Access, error) {
-	args := m.Called(ctx)
+func (m *MockAccessRepository) GetAccess(ctx context.Context, complete bool) ([]*model.Access, error) {
+	args := m.Called(ctx, complete)
 	if args.Get(0) == nil {
 		return nil, args.Error(1)
 	}

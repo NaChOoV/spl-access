@@ -68,8 +68,13 @@ func (b *BigQueryAccess) UpdateOrCreateAccess(ctx context.Context, access []*dto
 	return nil
 }
 
-func (b *BigQueryAccess) GetAccess(ctx context.Context) ([]*model.Access, error) {
-	bigQueryFile, err := os.ReadFile("src/repository/bigquery/access_get.sql")
+func (b *BigQueryAccess) GetAccess(ctx context.Context, complete bool) ([]*model.Access, error) {
+	filePath := "src/repository/bigquery/access_get.sql"
+	if complete {
+		filePath = "src/repository/bigquery/access_get_complete.sql"
+	}
+
+	bigQueryFile, err := os.ReadFile(filePath)
 	if err != nil {
 		return nil, err
 	}
