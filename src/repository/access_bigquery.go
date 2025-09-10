@@ -88,12 +88,12 @@ func (b *BigQueryAccess) GetAccess(ctx context.Context, complete bool) ([]*model
 	var accessList []*model.Access
 	for {
 		var row struct {
-			ExternalId string     `bigquery:"external_id"`
-			Run        string     `bigquery:"run"`
-			FullName   string     `bigquery:"full_name"`
-			Location   int64      `bigquery:"location"`
-			EntryAt    time.Time  `bigquery:"entry_at"`
-			ExitAt     *time.Time `bigquery:"exit_at"`
+			ExternalId string                 `bigquery:"external_id"`
+			Run        string                 `bigquery:"run"`
+			FullName   string                 `bigquery:"full_name"`
+			Location   int64                  `bigquery:"location"`
+			EntryAt    time.Time              `bigquery:"entry_at"`
+			ExitAt     bigquery.NullTimestamp `bigquery:"exit_at"`
 		}
 
 		err := it.Next(&row)
@@ -104,13 +104,18 @@ func (b *BigQueryAccess) GetAccess(ctx context.Context, complete bool) ([]*model
 			return nil, fmt.Errorf("failed to iterate over results: %w", err)
 		}
 
+		var exitAt *time.Time
+		if row.ExitAt.Valid {
+			exitAt = &row.ExitAt.Timestamp
+		}
+
 		access := &model.Access{
 			ExternalId: row.ExternalId,
 			Run:        row.Run,
 			FullName:   row.FullName,
 			Location:   fmt.Sprintf("%d", row.Location),
 			EntryAt:    row.EntryAt,
-			ExitAt:     row.ExitAt,
+			ExitAt:     exitAt,
 		}
 		accessList = append(accessList, access)
 	}
