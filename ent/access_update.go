@@ -23,107 +23,86 @@ type AccessUpdate struct {
 }
 
 // Where appends a list predicates to the AccessUpdate builder.
-func (au *AccessUpdate) Where(ps ...predicate.Access) *AccessUpdate {
-	au.mutation.Where(ps...)
-	return au
+func (_u *AccessUpdate) Where(ps ...predicate.Access) *AccessUpdate {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // SetRun sets the "run" field.
-func (au *AccessUpdate) SetRun(s string) *AccessUpdate {
-	au.mutation.SetRun(s)
-	return au
+func (_u *AccessUpdate) SetRun(v string) *AccessUpdate {
+	_u.mutation.SetRun(v)
+	return _u
 }
 
 // SetNillableRun sets the "run" field if the given value is not nil.
-func (au *AccessUpdate) SetNillableRun(s *string) *AccessUpdate {
-	if s != nil {
-		au.SetRun(*s)
+func (_u *AccessUpdate) SetNillableRun(v *string) *AccessUpdate {
+	if v != nil {
+		_u.SetRun(*v)
 	}
-	return au
+	return _u
 }
 
 // SetLocation sets the "location" field.
-func (au *AccessUpdate) SetLocation(a access.Location) *AccessUpdate {
-	au.mutation.SetLocation(a)
-	return au
+func (_u *AccessUpdate) SetLocation(v access.Location) *AccessUpdate {
+	_u.mutation.SetLocation(v)
+	return _u
 }
 
 // SetNillableLocation sets the "location" field if the given value is not nil.
-func (au *AccessUpdate) SetNillableLocation(a *access.Location) *AccessUpdate {
-	if a != nil {
-		au.SetLocation(*a)
+func (_u *AccessUpdate) SetNillableLocation(v *access.Location) *AccessUpdate {
+	if v != nil {
+		_u.SetLocation(*v)
 	}
-	return au
+	return _u
 }
 
 // SetEntryAt sets the "entry_at" field.
-func (au *AccessUpdate) SetEntryAt(t time.Time) *AccessUpdate {
-	au.mutation.SetEntryAt(t)
-	return au
+func (_u *AccessUpdate) SetEntryAt(v time.Time) *AccessUpdate {
+	_u.mutation.SetEntryAt(v)
+	return _u
 }
 
 // SetNillableEntryAt sets the "entry_at" field if the given value is not nil.
-func (au *AccessUpdate) SetNillableEntryAt(t *time.Time) *AccessUpdate {
-	if t != nil {
-		au.SetEntryAt(*t)
+func (_u *AccessUpdate) SetNillableEntryAt(v *time.Time) *AccessUpdate {
+	if v != nil {
+		_u.SetEntryAt(*v)
 	}
-	return au
+	return _u
 }
 
 // SetExitAt sets the "exit_at" field.
-func (au *AccessUpdate) SetExitAt(t time.Time) *AccessUpdate {
-	au.mutation.SetExitAt(t)
-	return au
+func (_u *AccessUpdate) SetExitAt(v time.Time) *AccessUpdate {
+	_u.mutation.SetExitAt(v)
+	return _u
 }
 
 // SetNillableExitAt sets the "exit_at" field if the given value is not nil.
-func (au *AccessUpdate) SetNillableExitAt(t *time.Time) *AccessUpdate {
-	if t != nil {
-		au.SetExitAt(*t)
+func (_u *AccessUpdate) SetNillableExitAt(v *time.Time) *AccessUpdate {
+	if v != nil {
+		_u.SetExitAt(*v)
 	}
-	return au
+	return _u
 }
 
 // ClearExitAt clears the value of the "exit_at" field.
-func (au *AccessUpdate) ClearExitAt() *AccessUpdate {
-	au.mutation.ClearExitAt()
-	return au
-}
-
-// SetCreatedAt sets the "created_at" field.
-func (au *AccessUpdate) SetCreatedAt(t time.Time) *AccessUpdate {
-	au.mutation.SetCreatedAt(t)
-	return au
-}
-
-// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (au *AccessUpdate) SetNillableCreatedAt(t *time.Time) *AccessUpdate {
-	if t != nil {
-		au.SetCreatedAt(*t)
-	}
-	return au
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (au *AccessUpdate) SetUpdatedAt(t time.Time) *AccessUpdate {
-	au.mutation.SetUpdatedAt(t)
-	return au
+func (_u *AccessUpdate) ClearExitAt() *AccessUpdate {
+	_u.mutation.ClearExitAt()
+	return _u
 }
 
 // Mutation returns the AccessMutation object of the builder.
-func (au *AccessUpdate) Mutation() *AccessMutation {
-	return au.mutation
+func (_u *AccessUpdate) Mutation() *AccessMutation {
+	return _u.mutation
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
-func (au *AccessUpdate) Save(ctx context.Context) (int, error) {
-	au.defaults()
-	return withHooks(ctx, au.sqlSave, au.mutation, au.hooks)
+func (_u *AccessUpdate) Save(ctx context.Context) (int, error) {
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (au *AccessUpdate) SaveX(ctx context.Context) int {
-	affected, err := au.Save(ctx)
+func (_u *AccessUpdate) SaveX(ctx context.Context) int {
+	affected, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -131,29 +110,21 @@ func (au *AccessUpdate) SaveX(ctx context.Context) int {
 }
 
 // Exec executes the query.
-func (au *AccessUpdate) Exec(ctx context.Context) error {
-	_, err := au.Save(ctx)
+func (_u *AccessUpdate) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (au *AccessUpdate) ExecX(ctx context.Context) {
-	if err := au.Exec(ctx); err != nil {
+func (_u *AccessUpdate) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (au *AccessUpdate) defaults() {
-	if _, ok := au.mutation.UpdatedAt(); !ok {
-		v := access.UpdateDefaultUpdatedAt()
-		au.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
-func (au *AccessUpdate) check() error {
-	if v, ok := au.mutation.Location(); ok {
+func (_u *AccessUpdate) check() error {
+	if v, ok := _u.mutation.Location(); ok {
 		if err := access.LocationValidator(v); err != nil {
 			return &ValidationError{Name: "location", err: fmt.Errorf(`ent: validator failed for field "Access.location": %w`, err)}
 		}
@@ -161,40 +132,34 @@ func (au *AccessUpdate) check() error {
 	return nil
 }
 
-func (au *AccessUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := au.check(); err != nil {
-		return n, err
+func (_u *AccessUpdate) sqlSave(ctx context.Context) (_node int, err error) {
+	if err := _u.check(); err != nil {
+		return _node, err
 	}
 	_spec := sqlgraph.NewUpdateSpec(access.Table, access.Columns, sqlgraph.NewFieldSpec(access.FieldID, field.TypeInt))
-	if ps := au.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if value, ok := au.mutation.Run(); ok {
+	if value, ok := _u.mutation.Run(); ok {
 		_spec.SetField(access.FieldRun, field.TypeString, value)
 	}
-	if value, ok := au.mutation.Location(); ok {
+	if value, ok := _u.mutation.Location(); ok {
 		_spec.SetField(access.FieldLocation, field.TypeEnum, value)
 	}
-	if value, ok := au.mutation.EntryAt(); ok {
+	if value, ok := _u.mutation.EntryAt(); ok {
 		_spec.SetField(access.FieldEntryAt, field.TypeTime, value)
 	}
-	if value, ok := au.mutation.ExitAt(); ok {
+	if value, ok := _u.mutation.ExitAt(); ok {
 		_spec.SetField(access.FieldExitAt, field.TypeTime, value)
 	}
-	if au.mutation.ExitAtCleared() {
+	if _u.mutation.ExitAtCleared() {
 		_spec.ClearField(access.FieldExitAt, field.TypeTime)
 	}
-	if value, ok := au.mutation.CreatedAt(); ok {
-		_spec.SetField(access.FieldCreatedAt, field.TypeTime, value)
-	}
-	if value, ok := au.mutation.UpdatedAt(); ok {
-		_spec.SetField(access.FieldUpdatedAt, field.TypeTime, value)
-	}
-	if n, err = sqlgraph.UpdateNodes(ctx, au.driver, _spec); err != nil {
+	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{access.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -202,8 +167,8 @@ func (au *AccessUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		return 0, err
 	}
-	au.mutation.done = true
-	return n, nil
+	_u.mutation.done = true
+	return _node, nil
 }
 
 // AccessUpdateOne is the builder for updating a single Access entity.
@@ -215,114 +180,93 @@ type AccessUpdateOne struct {
 }
 
 // SetRun sets the "run" field.
-func (auo *AccessUpdateOne) SetRun(s string) *AccessUpdateOne {
-	auo.mutation.SetRun(s)
-	return auo
+func (_u *AccessUpdateOne) SetRun(v string) *AccessUpdateOne {
+	_u.mutation.SetRun(v)
+	return _u
 }
 
 // SetNillableRun sets the "run" field if the given value is not nil.
-func (auo *AccessUpdateOne) SetNillableRun(s *string) *AccessUpdateOne {
-	if s != nil {
-		auo.SetRun(*s)
+func (_u *AccessUpdateOne) SetNillableRun(v *string) *AccessUpdateOne {
+	if v != nil {
+		_u.SetRun(*v)
 	}
-	return auo
+	return _u
 }
 
 // SetLocation sets the "location" field.
-func (auo *AccessUpdateOne) SetLocation(a access.Location) *AccessUpdateOne {
-	auo.mutation.SetLocation(a)
-	return auo
+func (_u *AccessUpdateOne) SetLocation(v access.Location) *AccessUpdateOne {
+	_u.mutation.SetLocation(v)
+	return _u
 }
 
 // SetNillableLocation sets the "location" field if the given value is not nil.
-func (auo *AccessUpdateOne) SetNillableLocation(a *access.Location) *AccessUpdateOne {
-	if a != nil {
-		auo.SetLocation(*a)
+func (_u *AccessUpdateOne) SetNillableLocation(v *access.Location) *AccessUpdateOne {
+	if v != nil {
+		_u.SetLocation(*v)
 	}
-	return auo
+	return _u
 }
 
 // SetEntryAt sets the "entry_at" field.
-func (auo *AccessUpdateOne) SetEntryAt(t time.Time) *AccessUpdateOne {
-	auo.mutation.SetEntryAt(t)
-	return auo
+func (_u *AccessUpdateOne) SetEntryAt(v time.Time) *AccessUpdateOne {
+	_u.mutation.SetEntryAt(v)
+	return _u
 }
 
 // SetNillableEntryAt sets the "entry_at" field if the given value is not nil.
-func (auo *AccessUpdateOne) SetNillableEntryAt(t *time.Time) *AccessUpdateOne {
-	if t != nil {
-		auo.SetEntryAt(*t)
+func (_u *AccessUpdateOne) SetNillableEntryAt(v *time.Time) *AccessUpdateOne {
+	if v != nil {
+		_u.SetEntryAt(*v)
 	}
-	return auo
+	return _u
 }
 
 // SetExitAt sets the "exit_at" field.
-func (auo *AccessUpdateOne) SetExitAt(t time.Time) *AccessUpdateOne {
-	auo.mutation.SetExitAt(t)
-	return auo
+func (_u *AccessUpdateOne) SetExitAt(v time.Time) *AccessUpdateOne {
+	_u.mutation.SetExitAt(v)
+	return _u
 }
 
 // SetNillableExitAt sets the "exit_at" field if the given value is not nil.
-func (auo *AccessUpdateOne) SetNillableExitAt(t *time.Time) *AccessUpdateOne {
-	if t != nil {
-		auo.SetExitAt(*t)
+func (_u *AccessUpdateOne) SetNillableExitAt(v *time.Time) *AccessUpdateOne {
+	if v != nil {
+		_u.SetExitAt(*v)
 	}
-	return auo
+	return _u
 }
 
 // ClearExitAt clears the value of the "exit_at" field.
-func (auo *AccessUpdateOne) ClearExitAt() *AccessUpdateOne {
-	auo.mutation.ClearExitAt()
-	return auo
-}
-
-// SetCreatedAt sets the "created_at" field.
-func (auo *AccessUpdateOne) SetCreatedAt(t time.Time) *AccessUpdateOne {
-	auo.mutation.SetCreatedAt(t)
-	return auo
-}
-
-// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (auo *AccessUpdateOne) SetNillableCreatedAt(t *time.Time) *AccessUpdateOne {
-	if t != nil {
-		auo.SetCreatedAt(*t)
-	}
-	return auo
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (auo *AccessUpdateOne) SetUpdatedAt(t time.Time) *AccessUpdateOne {
-	auo.mutation.SetUpdatedAt(t)
-	return auo
+func (_u *AccessUpdateOne) ClearExitAt() *AccessUpdateOne {
+	_u.mutation.ClearExitAt()
+	return _u
 }
 
 // Mutation returns the AccessMutation object of the builder.
-func (auo *AccessUpdateOne) Mutation() *AccessMutation {
-	return auo.mutation
+func (_u *AccessUpdateOne) Mutation() *AccessMutation {
+	return _u.mutation
 }
 
 // Where appends a list predicates to the AccessUpdate builder.
-func (auo *AccessUpdateOne) Where(ps ...predicate.Access) *AccessUpdateOne {
-	auo.mutation.Where(ps...)
-	return auo
+func (_u *AccessUpdateOne) Where(ps ...predicate.Access) *AccessUpdateOne {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
 // The default is selecting all fields defined in the entity schema.
-func (auo *AccessUpdateOne) Select(field string, fields ...string) *AccessUpdateOne {
-	auo.fields = append([]string{field}, fields...)
-	return auo
+func (_u *AccessUpdateOne) Select(field string, fields ...string) *AccessUpdateOne {
+	_u.fields = append([]string{field}, fields...)
+	return _u
 }
 
 // Save executes the query and returns the updated Access entity.
-func (auo *AccessUpdateOne) Save(ctx context.Context) (*Access, error) {
-	auo.defaults()
-	return withHooks(ctx, auo.sqlSave, auo.mutation, auo.hooks)
+func (_u *AccessUpdateOne) Save(ctx context.Context) (*Access, error) {
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (auo *AccessUpdateOne) SaveX(ctx context.Context) *Access {
-	node, err := auo.Save(ctx)
+func (_u *AccessUpdateOne) SaveX(ctx context.Context) *Access {
+	node, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -330,29 +274,21 @@ func (auo *AccessUpdateOne) SaveX(ctx context.Context) *Access {
 }
 
 // Exec executes the query on the entity.
-func (auo *AccessUpdateOne) Exec(ctx context.Context) error {
-	_, err := auo.Save(ctx)
+func (_u *AccessUpdateOne) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (auo *AccessUpdateOne) ExecX(ctx context.Context) {
-	if err := auo.Exec(ctx); err != nil {
+func (_u *AccessUpdateOne) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (auo *AccessUpdateOne) defaults() {
-	if _, ok := auo.mutation.UpdatedAt(); !ok {
-		v := access.UpdateDefaultUpdatedAt()
-		auo.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
-func (auo *AccessUpdateOne) check() error {
-	if v, ok := auo.mutation.Location(); ok {
+func (_u *AccessUpdateOne) check() error {
+	if v, ok := _u.mutation.Location(); ok {
 		if err := access.LocationValidator(v); err != nil {
 			return &ValidationError{Name: "location", err: fmt.Errorf(`ent: validator failed for field "Access.location": %w`, err)}
 		}
@@ -360,17 +296,17 @@ func (auo *AccessUpdateOne) check() error {
 	return nil
 }
 
-func (auo *AccessUpdateOne) sqlSave(ctx context.Context) (_node *Access, err error) {
-	if err := auo.check(); err != nil {
+func (_u *AccessUpdateOne) sqlSave(ctx context.Context) (_node *Access, err error) {
+	if err := _u.check(); err != nil {
 		return _node, err
 	}
 	_spec := sqlgraph.NewUpdateSpec(access.Table, access.Columns, sqlgraph.NewFieldSpec(access.FieldID, field.TypeInt))
-	id, ok := auo.mutation.ID()
+	id, ok := _u.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Access.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
-	if fields := auo.fields; len(fields) > 0 {
+	if fields := _u.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
 		_spec.Node.Columns = append(_spec.Node.Columns, access.FieldID)
 		for _, f := range fields {
@@ -382,38 +318,32 @@ func (auo *AccessUpdateOne) sqlSave(ctx context.Context) (_node *Access, err err
 			}
 		}
 	}
-	if ps := auo.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if value, ok := auo.mutation.Run(); ok {
+	if value, ok := _u.mutation.Run(); ok {
 		_spec.SetField(access.FieldRun, field.TypeString, value)
 	}
-	if value, ok := auo.mutation.Location(); ok {
+	if value, ok := _u.mutation.Location(); ok {
 		_spec.SetField(access.FieldLocation, field.TypeEnum, value)
 	}
-	if value, ok := auo.mutation.EntryAt(); ok {
+	if value, ok := _u.mutation.EntryAt(); ok {
 		_spec.SetField(access.FieldEntryAt, field.TypeTime, value)
 	}
-	if value, ok := auo.mutation.ExitAt(); ok {
+	if value, ok := _u.mutation.ExitAt(); ok {
 		_spec.SetField(access.FieldExitAt, field.TypeTime, value)
 	}
-	if auo.mutation.ExitAtCleared() {
+	if _u.mutation.ExitAtCleared() {
 		_spec.ClearField(access.FieldExitAt, field.TypeTime)
 	}
-	if value, ok := auo.mutation.CreatedAt(); ok {
-		_spec.SetField(access.FieldCreatedAt, field.TypeTime, value)
-	}
-	if value, ok := auo.mutation.UpdatedAt(); ok {
-		_spec.SetField(access.FieldUpdatedAt, field.TypeTime, value)
-	}
-	_node = &Access{config: auo.config}
+	_node = &Access{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
-	if err = sqlgraph.UpdateNode(ctx, auo.driver, _spec); err != nil {
+	if err = sqlgraph.UpdateNode(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{access.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -421,6 +351,6 @@ func (auo *AccessUpdateOne) sqlSave(ctx context.Context) (_node *Access, err err
 		}
 		return nil, err
 	}
-	auo.mutation.done = true
+	_u.mutation.done = true
 	return _node, nil
 }

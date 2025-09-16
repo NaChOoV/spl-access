@@ -23,87 +23,87 @@ type UserUpdate struct {
 }
 
 // Where appends a list predicates to the UserUpdate builder.
-func (uu *UserUpdate) Where(ps ...predicate.User) *UserUpdate {
-	uu.mutation.Where(ps...)
-	return uu
+func (_u *UserUpdate) Where(ps ...predicate.User) *UserUpdate {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // SetRun sets the "run" field.
-func (uu *UserUpdate) SetRun(s string) *UserUpdate {
-	uu.mutation.SetRun(s)
-	return uu
+func (_u *UserUpdate) SetRun(v string) *UserUpdate {
+	_u.mutation.SetRun(v)
+	return _u
 }
 
 // SetNillableRun sets the "run" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableRun(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetRun(*s)
+func (_u *UserUpdate) SetNillableRun(v *string) *UserUpdate {
+	if v != nil {
+		_u.SetRun(*v)
 	}
-	return uu
+	return _u
 }
 
 // SetExternalID sets the "external_id" field.
-func (uu *UserUpdate) SetExternalID(s string) *UserUpdate {
-	uu.mutation.SetExternalID(s)
-	return uu
+func (_u *UserUpdate) SetExternalID(v string) *UserUpdate {
+	_u.mutation.SetExternalID(v)
+	return _u
 }
 
 // SetNillableExternalID sets the "external_id" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableExternalID(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetExternalID(*s)
+func (_u *UserUpdate) SetNillableExternalID(v *string) *UserUpdate {
+	if v != nil {
+		_u.SetExternalID(*v)
 	}
-	return uu
+	return _u
 }
 
 // SetFullName sets the "full_name" field.
-func (uu *UserUpdate) SetFullName(s string) *UserUpdate {
-	uu.mutation.SetFullName(s)
-	return uu
+func (_u *UserUpdate) SetFullName(v string) *UserUpdate {
+	_u.mutation.SetFullName(v)
+	return _u
 }
 
 // SetNillableFullName sets the "full_name" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableFullName(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetFullName(*s)
+func (_u *UserUpdate) SetNillableFullName(v *string) *UserUpdate {
+	if v != nil {
+		_u.SetFullName(*v)
 	}
-	return uu
+	return _u
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (uu *UserUpdate) SetCreatedAt(t time.Time) *UserUpdate {
-	uu.mutation.SetCreatedAt(t)
-	return uu
+func (_u *UserUpdate) SetCreatedAt(v time.Time) *UserUpdate {
+	_u.mutation.SetCreatedAt(v)
+	return _u
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableCreatedAt(t *time.Time) *UserUpdate {
-	if t != nil {
-		uu.SetCreatedAt(*t)
+func (_u *UserUpdate) SetNillableCreatedAt(v *time.Time) *UserUpdate {
+	if v != nil {
+		_u.SetCreatedAt(*v)
 	}
-	return uu
+	return _u
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (uu *UserUpdate) SetUpdatedAt(t time.Time) *UserUpdate {
-	uu.mutation.SetUpdatedAt(t)
-	return uu
+func (_u *UserUpdate) SetUpdatedAt(v time.Time) *UserUpdate {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // Mutation returns the UserMutation object of the builder.
-func (uu *UserUpdate) Mutation() *UserMutation {
-	return uu.mutation
+func (_u *UserUpdate) Mutation() *UserMutation {
+	return _u.mutation
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
-func (uu *UserUpdate) Save(ctx context.Context) (int, error) {
-	uu.defaults()
-	return withHooks(ctx, uu.sqlSave, uu.mutation, uu.hooks)
+func (_u *UserUpdate) Save(ctx context.Context) (int, error) {
+	_u.defaults()
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (uu *UserUpdate) SaveX(ctx context.Context) int {
-	affected, err := uu.Save(ctx)
+func (_u *UserUpdate) SaveX(ctx context.Context) int {
+	affected, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -111,51 +111,51 @@ func (uu *UserUpdate) SaveX(ctx context.Context) int {
 }
 
 // Exec executes the query.
-func (uu *UserUpdate) Exec(ctx context.Context) error {
-	_, err := uu.Save(ctx)
+func (_u *UserUpdate) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (uu *UserUpdate) ExecX(ctx context.Context) {
-	if err := uu.Exec(ctx); err != nil {
+func (_u *UserUpdate) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (uu *UserUpdate) defaults() {
-	if _, ok := uu.mutation.UpdatedAt(); !ok {
+func (_u *UserUpdate) defaults() {
+	if _, ok := _u.mutation.UpdatedAt(); !ok {
 		v := user.UpdateDefaultUpdatedAt()
-		uu.mutation.SetUpdatedAt(v)
+		_u.mutation.SetUpdatedAt(v)
 	}
 }
 
-func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
+func (_u *UserUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt))
-	if ps := uu.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if value, ok := uu.mutation.Run(); ok {
+	if value, ok := _u.mutation.Run(); ok {
 		_spec.SetField(user.FieldRun, field.TypeString, value)
 	}
-	if value, ok := uu.mutation.ExternalID(); ok {
+	if value, ok := _u.mutation.ExternalID(); ok {
 		_spec.SetField(user.FieldExternalID, field.TypeString, value)
 	}
-	if value, ok := uu.mutation.FullName(); ok {
+	if value, ok := _u.mutation.FullName(); ok {
 		_spec.SetField(user.FieldFullName, field.TypeString, value)
 	}
-	if value, ok := uu.mutation.CreatedAt(); ok {
+	if value, ok := _u.mutation.CreatedAt(); ok {
 		_spec.SetField(user.FieldCreatedAt, field.TypeTime, value)
 	}
-	if value, ok := uu.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(user.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
+	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{user.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -163,8 +163,8 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		return 0, err
 	}
-	uu.mutation.done = true
-	return n, nil
+	_u.mutation.done = true
+	return _node, nil
 }
 
 // UserUpdateOne is the builder for updating a single User entity.
@@ -176,94 +176,94 @@ type UserUpdateOne struct {
 }
 
 // SetRun sets the "run" field.
-func (uuo *UserUpdateOne) SetRun(s string) *UserUpdateOne {
-	uuo.mutation.SetRun(s)
-	return uuo
+func (_u *UserUpdateOne) SetRun(v string) *UserUpdateOne {
+	_u.mutation.SetRun(v)
+	return _u
 }
 
 // SetNillableRun sets the "run" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableRun(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetRun(*s)
+func (_u *UserUpdateOne) SetNillableRun(v *string) *UserUpdateOne {
+	if v != nil {
+		_u.SetRun(*v)
 	}
-	return uuo
+	return _u
 }
 
 // SetExternalID sets the "external_id" field.
-func (uuo *UserUpdateOne) SetExternalID(s string) *UserUpdateOne {
-	uuo.mutation.SetExternalID(s)
-	return uuo
+func (_u *UserUpdateOne) SetExternalID(v string) *UserUpdateOne {
+	_u.mutation.SetExternalID(v)
+	return _u
 }
 
 // SetNillableExternalID sets the "external_id" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableExternalID(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetExternalID(*s)
+func (_u *UserUpdateOne) SetNillableExternalID(v *string) *UserUpdateOne {
+	if v != nil {
+		_u.SetExternalID(*v)
 	}
-	return uuo
+	return _u
 }
 
 // SetFullName sets the "full_name" field.
-func (uuo *UserUpdateOne) SetFullName(s string) *UserUpdateOne {
-	uuo.mutation.SetFullName(s)
-	return uuo
+func (_u *UserUpdateOne) SetFullName(v string) *UserUpdateOne {
+	_u.mutation.SetFullName(v)
+	return _u
 }
 
 // SetNillableFullName sets the "full_name" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableFullName(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetFullName(*s)
+func (_u *UserUpdateOne) SetNillableFullName(v *string) *UserUpdateOne {
+	if v != nil {
+		_u.SetFullName(*v)
 	}
-	return uuo
+	return _u
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (uuo *UserUpdateOne) SetCreatedAt(t time.Time) *UserUpdateOne {
-	uuo.mutation.SetCreatedAt(t)
-	return uuo
+func (_u *UserUpdateOne) SetCreatedAt(v time.Time) *UserUpdateOne {
+	_u.mutation.SetCreatedAt(v)
+	return _u
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableCreatedAt(t *time.Time) *UserUpdateOne {
-	if t != nil {
-		uuo.SetCreatedAt(*t)
+func (_u *UserUpdateOne) SetNillableCreatedAt(v *time.Time) *UserUpdateOne {
+	if v != nil {
+		_u.SetCreatedAt(*v)
 	}
-	return uuo
+	return _u
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (uuo *UserUpdateOne) SetUpdatedAt(t time.Time) *UserUpdateOne {
-	uuo.mutation.SetUpdatedAt(t)
-	return uuo
+func (_u *UserUpdateOne) SetUpdatedAt(v time.Time) *UserUpdateOne {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // Mutation returns the UserMutation object of the builder.
-func (uuo *UserUpdateOne) Mutation() *UserMutation {
-	return uuo.mutation
+func (_u *UserUpdateOne) Mutation() *UserMutation {
+	return _u.mutation
 }
 
 // Where appends a list predicates to the UserUpdate builder.
-func (uuo *UserUpdateOne) Where(ps ...predicate.User) *UserUpdateOne {
-	uuo.mutation.Where(ps...)
-	return uuo
+func (_u *UserUpdateOne) Where(ps ...predicate.User) *UserUpdateOne {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
 // The default is selecting all fields defined in the entity schema.
-func (uuo *UserUpdateOne) Select(field string, fields ...string) *UserUpdateOne {
-	uuo.fields = append([]string{field}, fields...)
-	return uuo
+func (_u *UserUpdateOne) Select(field string, fields ...string) *UserUpdateOne {
+	_u.fields = append([]string{field}, fields...)
+	return _u
 }
 
 // Save executes the query and returns the updated User entity.
-func (uuo *UserUpdateOne) Save(ctx context.Context) (*User, error) {
-	uuo.defaults()
-	return withHooks(ctx, uuo.sqlSave, uuo.mutation, uuo.hooks)
+func (_u *UserUpdateOne) Save(ctx context.Context) (*User, error) {
+	_u.defaults()
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (uuo *UserUpdateOne) SaveX(ctx context.Context) *User {
-	node, err := uuo.Save(ctx)
+func (_u *UserUpdateOne) SaveX(ctx context.Context) *User {
+	node, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -271,34 +271,34 @@ func (uuo *UserUpdateOne) SaveX(ctx context.Context) *User {
 }
 
 // Exec executes the query on the entity.
-func (uuo *UserUpdateOne) Exec(ctx context.Context) error {
-	_, err := uuo.Save(ctx)
+func (_u *UserUpdateOne) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (uuo *UserUpdateOne) ExecX(ctx context.Context) {
-	if err := uuo.Exec(ctx); err != nil {
+func (_u *UserUpdateOne) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (uuo *UserUpdateOne) defaults() {
-	if _, ok := uuo.mutation.UpdatedAt(); !ok {
+func (_u *UserUpdateOne) defaults() {
+	if _, ok := _u.mutation.UpdatedAt(); !ok {
 		v := user.UpdateDefaultUpdatedAt()
-		uuo.mutation.SetUpdatedAt(v)
+		_u.mutation.SetUpdatedAt(v)
 	}
 }
 
-func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) {
+func (_u *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) {
 	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt))
-	id, ok := uuo.mutation.ID()
+	id, ok := _u.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "User.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
-	if fields := uuo.fields; len(fields) > 0 {
+	if fields := _u.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
 		_spec.Node.Columns = append(_spec.Node.Columns, user.FieldID)
 		for _, f := range fields {
@@ -310,32 +310,32 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			}
 		}
 	}
-	if ps := uuo.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if value, ok := uuo.mutation.Run(); ok {
+	if value, ok := _u.mutation.Run(); ok {
 		_spec.SetField(user.FieldRun, field.TypeString, value)
 	}
-	if value, ok := uuo.mutation.ExternalID(); ok {
+	if value, ok := _u.mutation.ExternalID(); ok {
 		_spec.SetField(user.FieldExternalID, field.TypeString, value)
 	}
-	if value, ok := uuo.mutation.FullName(); ok {
+	if value, ok := _u.mutation.FullName(); ok {
 		_spec.SetField(user.FieldFullName, field.TypeString, value)
 	}
-	if value, ok := uuo.mutation.CreatedAt(); ok {
+	if value, ok := _u.mutation.CreatedAt(); ok {
 		_spec.SetField(user.FieldCreatedAt, field.TypeTime, value)
 	}
-	if value, ok := uuo.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(user.FieldUpdatedAt, field.TypeTime, value)
 	}
-	_node = &User{config: uuo.config}
+	_node = &User{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
-	if err = sqlgraph.UpdateNode(ctx, uuo.driver, _spec); err != nil {
+	if err = sqlgraph.UpdateNode(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{user.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -343,6 +343,6 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 		}
 		return nil, err
 	}
-	uuo.mutation.done = true
+	_u.mutation.done = true
 	return _node, nil
 }

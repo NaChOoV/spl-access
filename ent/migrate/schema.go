@@ -16,8 +16,6 @@ var (
 		{Name: "location", Type: field.TypeEnum, Enums: []string{"102", "104", "105", "106", "107", "108"}},
 		{Name: "entry_at", Type: field.TypeTime},
 		{Name: "exit_at", Type: field.TypeTime, Nullable: true},
-		{Name: "created_at", Type: field.TypeTime},
-		{Name: "updated_at", Type: field.TypeTime},
 	}
 	// AccessTable holds the schema information for the "access" table.
 	AccessTable = &schema.Table{
@@ -35,7 +33,7 @@ var (
 	// UserColumns holds the columns for the "user" table.
 	UserColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "run", Type: field.TypeString, Unique: true},
+		{Name: "run", Type: field.TypeString},
 		{Name: "external_id", Type: field.TypeString, Unique: true},
 		{Name: "full_name", Type: field.TypeString},
 		{Name: "created_at", Type: field.TypeTime},
@@ -48,9 +46,9 @@ var (
 		PrimaryKey: []*schema.Column{UserColumns[0]},
 		Indexes: []*schema.Index{
 			{
-				Name:    "user_run_external_id",
+				Name:    "user_external_id",
 				Unique:  true,
-				Columns: []*schema.Column{UserColumns[1], UserColumns[2]},
+				Columns: []*schema.Column{UserColumns[2]},
 			},
 		},
 	}

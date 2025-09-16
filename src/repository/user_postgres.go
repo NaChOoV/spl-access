@@ -8,7 +8,6 @@ import (
 
 type UserPostgres struct {
 	conn *ent.Client
-	ctx  *context.Context
 }
 
 func NewUserPostgres(
@@ -17,11 +16,10 @@ func NewUserPostgres(
 ) *UserPostgres {
 	return &UserPostgres{
 		conn: conn,
-		ctx:  ctx,
 	}
 }
 
-func (u *UserPostgres) CheckUsers(users []*dto.UserDto, tx ...any) error {
+func (u *UserPostgres) CheckUsers(ctx context.Context, users []*dto.UserDto, tx ...any) error {
 	var transaction *ent.Tx
 	if len(tx) > 0 && tx[0] != nil {
 		if entTx, ok := tx[0].(*ent.Tx); ok {
@@ -41,9 +39,9 @@ func (u *UserPostgres) CheckUsers(users []*dto.UserDto, tx ...any) error {
 	if transaction != nil {
 		err := transaction.User.
 			CreateBulk(usersToBulk...).
-			OnConflictColumns("external_id", "run").
+			OnConflictColumns("external_id").
 			UpdateNewValues().
-			Exec(*u.ctx)
+			Exec(ctx)
 		if err != nil {
 			transaction.Rollback()
 			return err
@@ -51,9 +49,9 @@ func (u *UserPostgres) CheckUsers(users []*dto.UserDto, tx ...any) error {
 	} else {
 		err := u.conn.User.
 			CreateBulk(usersToBulk...).
-			OnConflict().
+			OnConflictColumns("external_id").
 			UpdateNewValues().
-			Exec(*u.ctx)
+			Exec(ctx)
 		if err != nil {
 			return err
 		}

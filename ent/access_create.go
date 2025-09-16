@@ -23,79 +23,50 @@ type AccessCreate struct {
 }
 
 // SetRun sets the "run" field.
-func (ac *AccessCreate) SetRun(s string) *AccessCreate {
-	ac.mutation.SetRun(s)
-	return ac
+func (_c *AccessCreate) SetRun(v string) *AccessCreate {
+	_c.mutation.SetRun(v)
+	return _c
 }
 
 // SetLocation sets the "location" field.
-func (ac *AccessCreate) SetLocation(a access.Location) *AccessCreate {
-	ac.mutation.SetLocation(a)
-	return ac
+func (_c *AccessCreate) SetLocation(v access.Location) *AccessCreate {
+	_c.mutation.SetLocation(v)
+	return _c
 }
 
 // SetEntryAt sets the "entry_at" field.
-func (ac *AccessCreate) SetEntryAt(t time.Time) *AccessCreate {
-	ac.mutation.SetEntryAt(t)
-	return ac
+func (_c *AccessCreate) SetEntryAt(v time.Time) *AccessCreate {
+	_c.mutation.SetEntryAt(v)
+	return _c
 }
 
 // SetExitAt sets the "exit_at" field.
-func (ac *AccessCreate) SetExitAt(t time.Time) *AccessCreate {
-	ac.mutation.SetExitAt(t)
-	return ac
+func (_c *AccessCreate) SetExitAt(v time.Time) *AccessCreate {
+	_c.mutation.SetExitAt(v)
+	return _c
 }
 
 // SetNillableExitAt sets the "exit_at" field if the given value is not nil.
-func (ac *AccessCreate) SetNillableExitAt(t *time.Time) *AccessCreate {
-	if t != nil {
-		ac.SetExitAt(*t)
+func (_c *AccessCreate) SetNillableExitAt(v *time.Time) *AccessCreate {
+	if v != nil {
+		_c.SetExitAt(*v)
 	}
-	return ac
-}
-
-// SetCreatedAt sets the "created_at" field.
-func (ac *AccessCreate) SetCreatedAt(t time.Time) *AccessCreate {
-	ac.mutation.SetCreatedAt(t)
-	return ac
-}
-
-// SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (ac *AccessCreate) SetNillableCreatedAt(t *time.Time) *AccessCreate {
-	if t != nil {
-		ac.SetCreatedAt(*t)
-	}
-	return ac
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (ac *AccessCreate) SetUpdatedAt(t time.Time) *AccessCreate {
-	ac.mutation.SetUpdatedAt(t)
-	return ac
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (ac *AccessCreate) SetNillableUpdatedAt(t *time.Time) *AccessCreate {
-	if t != nil {
-		ac.SetUpdatedAt(*t)
-	}
-	return ac
+	return _c
 }
 
 // Mutation returns the AccessMutation object of the builder.
-func (ac *AccessCreate) Mutation() *AccessMutation {
-	return ac.mutation
+func (_c *AccessCreate) Mutation() *AccessMutation {
+	return _c.mutation
 }
 
 // Save creates the Access in the database.
-func (ac *AccessCreate) Save(ctx context.Context) (*Access, error) {
-	ac.defaults()
-	return withHooks(ctx, ac.sqlSave, ac.mutation, ac.hooks)
+func (_c *AccessCreate) Save(ctx context.Context) (*Access, error) {
+	return withHooks(ctx, _c.sqlSave, _c.mutation, _c.hooks)
 }
 
 // SaveX calls Save and panics if Save returns an error.
-func (ac *AccessCreate) SaveX(ctx context.Context) *Access {
-	v, err := ac.Save(ctx)
+func (_c *AccessCreate) SaveX(ctx context.Context) *Access {
+	v, err := _c.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -103,61 +74,43 @@ func (ac *AccessCreate) SaveX(ctx context.Context) *Access {
 }
 
 // Exec executes the query.
-func (ac *AccessCreate) Exec(ctx context.Context) error {
-	_, err := ac.Save(ctx)
+func (_c *AccessCreate) Exec(ctx context.Context) error {
+	_, err := _c.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (ac *AccessCreate) ExecX(ctx context.Context) {
-	if err := ac.Exec(ctx); err != nil {
+func (_c *AccessCreate) ExecX(ctx context.Context) {
+	if err := _c.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ac *AccessCreate) defaults() {
-	if _, ok := ac.mutation.CreatedAt(); !ok {
-		v := access.DefaultCreatedAt()
-		ac.mutation.SetCreatedAt(v)
-	}
-	if _, ok := ac.mutation.UpdatedAt(); !ok {
-		v := access.DefaultUpdatedAt()
-		ac.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
-func (ac *AccessCreate) check() error {
-	if _, ok := ac.mutation.Run(); !ok {
+func (_c *AccessCreate) check() error {
+	if _, ok := _c.mutation.Run(); !ok {
 		return &ValidationError{Name: "run", err: errors.New(`ent: missing required field "Access.run"`)}
 	}
-	if _, ok := ac.mutation.Location(); !ok {
+	if _, ok := _c.mutation.Location(); !ok {
 		return &ValidationError{Name: "location", err: errors.New(`ent: missing required field "Access.location"`)}
 	}
-	if v, ok := ac.mutation.Location(); ok {
+	if v, ok := _c.mutation.Location(); ok {
 		if err := access.LocationValidator(v); err != nil {
 			return &ValidationError{Name: "location", err: fmt.Errorf(`ent: validator failed for field "Access.location": %w`, err)}
 		}
 	}
-	if _, ok := ac.mutation.EntryAt(); !ok {
+	if _, ok := _c.mutation.EntryAt(); !ok {
 		return &ValidationError{Name: "entry_at", err: errors.New(`ent: missing required field "Access.entry_at"`)}
-	}
-	if _, ok := ac.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Access.created_at"`)}
-	}
-	if _, ok := ac.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Access.updated_at"`)}
 	}
 	return nil
 }
 
-func (ac *AccessCreate) sqlSave(ctx context.Context) (*Access, error) {
-	if err := ac.check(); err != nil {
+func (_c *AccessCreate) sqlSave(ctx context.Context) (*Access, error) {
+	if err := _c.check(); err != nil {
 		return nil, err
 	}
-	_node, _spec := ac.createSpec()
-	if err := sqlgraph.CreateNode(ctx, ac.driver, _spec); err != nil {
+	_node, _spec := _c.createSpec()
+	if err := sqlgraph.CreateNode(ctx, _c.driver, _spec); err != nil {
 		if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{msg: err.Error(), wrap: err}
 		}
@@ -165,40 +118,32 @@ func (ac *AccessCreate) sqlSave(ctx context.Context) (*Access, error) {
 	}
 	id := _spec.ID.Value.(int64)
 	_node.ID = int(id)
-	ac.mutation.id = &_node.ID
-	ac.mutation.done = true
+	_c.mutation.id = &_node.ID
+	_c.mutation.done = true
 	return _node, nil
 }
 
-func (ac *AccessCreate) createSpec() (*Access, *sqlgraph.CreateSpec) {
+func (_c *AccessCreate) createSpec() (*Access, *sqlgraph.CreateSpec) {
 	var (
-		_node = &Access{config: ac.config}
+		_node = &Access{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(access.Table, sqlgraph.NewFieldSpec(access.FieldID, field.TypeInt))
 	)
-	_spec.OnConflict = ac.conflict
-	if value, ok := ac.mutation.Run(); ok {
+	_spec.OnConflict = _c.conflict
+	if value, ok := _c.mutation.Run(); ok {
 		_spec.SetField(access.FieldRun, field.TypeString, value)
 		_node.Run = value
 	}
-	if value, ok := ac.mutation.Location(); ok {
+	if value, ok := _c.mutation.Location(); ok {
 		_spec.SetField(access.FieldLocation, field.TypeEnum, value)
 		_node.Location = value
 	}
-	if value, ok := ac.mutation.EntryAt(); ok {
+	if value, ok := _c.mutation.EntryAt(); ok {
 		_spec.SetField(access.FieldEntryAt, field.TypeTime, value)
 		_node.EntryAt = value
 	}
-	if value, ok := ac.mutation.ExitAt(); ok {
+	if value, ok := _c.mutation.ExitAt(); ok {
 		_spec.SetField(access.FieldExitAt, field.TypeTime, value)
 		_node.ExitAt = value
-	}
-	if value, ok := ac.mutation.CreatedAt(); ok {
-		_spec.SetField(access.FieldCreatedAt, field.TypeTime, value)
-		_node.CreatedAt = value
-	}
-	if value, ok := ac.mutation.UpdatedAt(); ok {
-		_spec.SetField(access.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
 	}
 	return _node, _spec
 }
@@ -219,10 +164,10 @@ func (ac *AccessCreate) createSpec() (*Access, *sqlgraph.CreateSpec) {
 //			SetRun(v+v).
 //		}).
 //		Exec(ctx)
-func (ac *AccessCreate) OnConflict(opts ...sql.ConflictOption) *AccessUpsertOne {
-	ac.conflict = opts
+func (_c *AccessCreate) OnConflict(opts ...sql.ConflictOption) *AccessUpsertOne {
+	_c.conflict = opts
 	return &AccessUpsertOne{
-		create: ac,
+		create: _c,
 	}
 }
 
@@ -232,10 +177,10 @@ func (ac *AccessCreate) OnConflict(opts ...sql.ConflictOption) *AccessUpsertOne 
 //	client.Access.Create().
 //		OnConflict(sql.ConflictColumns(columns...)).
 //		Exec(ctx)
-func (ac *AccessCreate) OnConflictColumns(columns ...string) *AccessUpsertOne {
-	ac.conflict = append(ac.conflict, sql.ConflictColumns(columns...))
+func (_c *AccessCreate) OnConflictColumns(columns ...string) *AccessUpsertOne {
+	_c.conflict = append(_c.conflict, sql.ConflictColumns(columns...))
 	return &AccessUpsertOne{
-		create: ac,
+		create: _c,
 	}
 }
 
@@ -303,30 +248,6 @@ func (u *AccessUpsert) UpdateExitAt() *AccessUpsert {
 // ClearExitAt clears the value of the "exit_at" field.
 func (u *AccessUpsert) ClearExitAt() *AccessUpsert {
 	u.SetNull(access.FieldExitAt)
-	return u
-}
-
-// SetCreatedAt sets the "created_at" field.
-func (u *AccessUpsert) SetCreatedAt(v time.Time) *AccessUpsert {
-	u.Set(access.FieldCreatedAt, v)
-	return u
-}
-
-// UpdateCreatedAt sets the "created_at" field to the value that was provided on create.
-func (u *AccessUpsert) UpdateCreatedAt() *AccessUpsert {
-	u.SetExcluded(access.FieldCreatedAt)
-	return u
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (u *AccessUpsert) SetUpdatedAt(v time.Time) *AccessUpsert {
-	u.Set(access.FieldUpdatedAt, v)
-	return u
-}
-
-// UpdateUpdatedAt sets the "updated_at" field to the value that was provided on create.
-func (u *AccessUpsert) UpdateUpdatedAt() *AccessUpsert {
-	u.SetExcluded(access.FieldUpdatedAt)
 	return u
 }
 
@@ -433,34 +354,6 @@ func (u *AccessUpsertOne) ClearExitAt() *AccessUpsertOne {
 	})
 }
 
-// SetCreatedAt sets the "created_at" field.
-func (u *AccessUpsertOne) SetCreatedAt(v time.Time) *AccessUpsertOne {
-	return u.Update(func(s *AccessUpsert) {
-		s.SetCreatedAt(v)
-	})
-}
-
-// UpdateCreatedAt sets the "created_at" field to the value that was provided on create.
-func (u *AccessUpsertOne) UpdateCreatedAt() *AccessUpsertOne {
-	return u.Update(func(s *AccessUpsert) {
-		s.UpdateCreatedAt()
-	})
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (u *AccessUpsertOne) SetUpdatedAt(v time.Time) *AccessUpsertOne {
-	return u.Update(func(s *AccessUpsert) {
-		s.SetUpdatedAt(v)
-	})
-}
-
-// UpdateUpdatedAt sets the "updated_at" field to the value that was provided on create.
-func (u *AccessUpsertOne) UpdateUpdatedAt() *AccessUpsertOne {
-	return u.Update(func(s *AccessUpsert) {
-		s.UpdateUpdatedAt()
-	})
-}
-
 // Exec executes the query.
 func (u *AccessUpsertOne) Exec(ctx context.Context) error {
 	if len(u.create.conflict) == 0 {
@@ -503,17 +396,16 @@ type AccessCreateBulk struct {
 }
 
 // Save creates the Access entities in the database.
-func (acb *AccessCreateBulk) Save(ctx context.Context) ([]*Access, error) {
-	if acb.err != nil {
-		return nil, acb.err
+func (_c *AccessCreateBulk) Save(ctx context.Context) ([]*Access, error) {
+	if _c.err != nil {
+		return nil, _c.err
 	}
-	specs := make([]*sqlgraph.CreateSpec, len(acb.builders))
-	nodes := make([]*Access, len(acb.builders))
-	mutators := make([]Mutator, len(acb.builders))
-	for i := range acb.builders {
+	specs := make([]*sqlgraph.CreateSpec, len(_c.builders))
+	nodes := make([]*Access, len(_c.builders))
+	mutators := make([]Mutator, len(_c.builders))
+	for i := range _c.builders {
 		func(i int, root context.Context) {
-			builder := acb.builders[i]
-			builder.defaults()
+			builder := _c.builders[i]
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*AccessMutation)
 				if !ok {
@@ -526,12 +418,12 @@ func (acb *AccessCreateBulk) Save(ctx context.Context) ([]*Access, error) {
 				var err error
 				nodes[i], specs[i] = builder.createSpec()
 				if i < len(mutators)-1 {
-					_, err = mutators[i+1].Mutate(root, acb.builders[i+1].mutation)
+					_, err = mutators[i+1].Mutate(root, _c.builders[i+1].mutation)
 				} else {
 					spec := &sqlgraph.BatchCreateSpec{Nodes: specs}
-					spec.OnConflict = acb.conflict
+					spec.OnConflict = _c.conflict
 					// Invoke the actual operation on the latest mutation in the chain.
-					if err = sqlgraph.BatchCreate(ctx, acb.driver, spec); err != nil {
+					if err = sqlgraph.BatchCreate(ctx, _c.driver, spec); err != nil {
 						if sqlgraph.IsConstraintError(err) {
 							err = &ConstraintError{msg: err.Error(), wrap: err}
 						}
@@ -555,7 +447,7 @@ func (acb *AccessCreateBulk) Save(ctx context.Context) ([]*Access, error) {
 		}(i, ctx)
 	}
 	if len(mutators) > 0 {
-		if _, err := mutators[0].Mutate(ctx, acb.builders[0].mutation); err != nil {
+		if _, err := mutators[0].Mutate(ctx, _c.builders[0].mutation); err != nil {
 			return nil, err
 		}
 	}
@@ -563,8 +455,8 @@ func (acb *AccessCreateBulk) Save(ctx context.Context) ([]*Access, error) {
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (acb *AccessCreateBulk) SaveX(ctx context.Context) []*Access {
-	v, err := acb.Save(ctx)
+func (_c *AccessCreateBulk) SaveX(ctx context.Context) []*Access {
+	v, err := _c.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -572,14 +464,14 @@ func (acb *AccessCreateBulk) SaveX(ctx context.Context) []*Access {
 }
 
 // Exec executes the query.
-func (acb *AccessCreateBulk) Exec(ctx context.Context) error {
-	_, err := acb.Save(ctx)
+func (_c *AccessCreateBulk) Exec(ctx context.Context) error {
+	_, err := _c.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (acb *AccessCreateBulk) ExecX(ctx context.Context) {
-	if err := acb.Exec(ctx); err != nil {
+func (_c *AccessCreateBulk) ExecX(ctx context.Context) {
+	if err := _c.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
@@ -599,10 +491,10 @@ func (acb *AccessCreateBulk) ExecX(ctx context.Context) {
 //			SetRun(v+v).
 //		}).
 //		Exec(ctx)
-func (acb *AccessCreateBulk) OnConflict(opts ...sql.ConflictOption) *AccessUpsertBulk {
-	acb.conflict = opts
+func (_c *AccessCreateBulk) OnConflict(opts ...sql.ConflictOption) *AccessUpsertBulk {
+	_c.conflict = opts
 	return &AccessUpsertBulk{
-		create: acb,
+		create: _c,
 	}
 }
 
@@ -612,10 +504,10 @@ func (acb *AccessCreateBulk) OnConflict(opts ...sql.ConflictOption) *AccessUpser
 //	client.Access.Create().
 //		OnConflict(sql.ConflictColumns(columns...)).
 //		Exec(ctx)
-func (acb *AccessCreateBulk) OnConflictColumns(columns ...string) *AccessUpsertBulk {
-	acb.conflict = append(acb.conflict, sql.ConflictColumns(columns...))
+func (_c *AccessCreateBulk) OnConflictColumns(columns ...string) *AccessUpsertBulk {
+	_c.conflict = append(_c.conflict, sql.ConflictColumns(columns...))
 	return &AccessUpsertBulk{
-		create: acb,
+		create: _c,
 	}
 }
 
@@ -725,34 +617,6 @@ func (u *AccessUpsertBulk) UpdateExitAt() *AccessUpsertBulk {
 func (u *AccessUpsertBulk) ClearExitAt() *AccessUpsertBulk {
 	return u.Update(func(s *AccessUpsert) {
 		s.ClearExitAt()
-	})
-}
-
-// SetCreatedAt sets the "created_at" field.
-func (u *AccessUpsertBulk) SetCreatedAt(v time.Time) *AccessUpsertBulk {
-	return u.Update(func(s *AccessUpsert) {
-		s.SetCreatedAt(v)
-	})
-}
-
-// UpdateCreatedAt sets the "created_at" field to the value that was provided on create.
-func (u *AccessUpsertBulk) UpdateCreatedAt() *AccessUpsertBulk {
-	return u.Update(func(s *AccessUpsert) {
-		s.UpdateCreatedAt()
-	})
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (u *AccessUpsertBulk) SetUpdatedAt(v time.Time) *AccessUpsertBulk {
-	return u.Update(func(s *AccessUpsert) {
-		s.SetUpdatedAt(v)
-	})
-}
-
-// UpdateUpdatedAt sets the "updated_at" field to the value that was provided on create.
-func (u *AccessUpsertBulk) UpdateUpdatedAt() *AccessUpsertBulk {
-	return u.Update(func(s *AccessUpsert) {
-		s.UpdateUpdatedAt()
 	})
 }
 

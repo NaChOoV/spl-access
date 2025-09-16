@@ -24,7 +24,7 @@ func (User) Annotations() []schema.Annotation {
 // Fields of the User.
 func (User) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("run").Unique(),
+		field.String("run"),
 		field.String("external_id").Unique(),
 		field.String("full_name"),
 		field.Time("created_at").
@@ -37,7 +37,7 @@ func (User) Fields() []ent.Field {
 
 func (User) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("run", "external_id").Unique(),
+		index.Fields("external_id").Unique(),
 	}
 }
 

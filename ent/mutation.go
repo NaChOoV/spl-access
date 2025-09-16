@@ -39,8 +39,6 @@ type AccessMutation struct {
 	location      *access.Location
 	entry_at      *time.Time
 	exit_at       *time.Time
-	created_at    *time.Time
-	updated_at    *time.Time
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*Access, error)
@@ -302,78 +300,6 @@ func (m *AccessMutation) ResetExitAt() {
 	delete(m.clearedFields, access.FieldExitAt)
 }
 
-// SetCreatedAt sets the "created_at" field.
-func (m *AccessMutation) SetCreatedAt(t time.Time) {
-	m.created_at = &t
-}
-
-// CreatedAt returns the value of the "created_at" field in the mutation.
-func (m *AccessMutation) CreatedAt() (r time.Time, exists bool) {
-	v := m.created_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCreatedAt returns the old "created_at" field's value of the Access entity.
-// If the Access object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *AccessMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
-	}
-	return oldValue.CreatedAt, nil
-}
-
-// ResetCreatedAt resets all changes to the "created_at" field.
-func (m *AccessMutation) ResetCreatedAt() {
-	m.created_at = nil
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (m *AccessMutation) SetUpdatedAt(t time.Time) {
-	m.updated_at = &t
-}
-
-// UpdatedAt returns the value of the "updated_at" field in the mutation.
-func (m *AccessMutation) UpdatedAt() (r time.Time, exists bool) {
-	v := m.updated_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUpdatedAt returns the old "updated_at" field's value of the Access entity.
-// If the Access object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *AccessMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
-	}
-	return oldValue.UpdatedAt, nil
-}
-
-// ResetUpdatedAt resets all changes to the "updated_at" field.
-func (m *AccessMutation) ResetUpdatedAt() {
-	m.updated_at = nil
-}
-
 // Where appends a list predicates to the AccessMutation builder.
 func (m *AccessMutation) Where(ps ...predicate.Access) {
 	m.predicates = append(m.predicates, ps...)
@@ -408,7 +334,7 @@ func (m *AccessMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *AccessMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 4)
 	if m.run != nil {
 		fields = append(fields, access.FieldRun)
 	}
@@ -420,12 +346,6 @@ func (m *AccessMutation) Fields() []string {
 	}
 	if m.exit_at != nil {
 		fields = append(fields, access.FieldExitAt)
-	}
-	if m.created_at != nil {
-		fields = append(fields, access.FieldCreatedAt)
-	}
-	if m.updated_at != nil {
-		fields = append(fields, access.FieldUpdatedAt)
 	}
 	return fields
 }
@@ -443,10 +363,6 @@ func (m *AccessMutation) Field(name string) (ent.Value, bool) {
 		return m.EntryAt()
 	case access.FieldExitAt:
 		return m.ExitAt()
-	case access.FieldCreatedAt:
-		return m.CreatedAt()
-	case access.FieldUpdatedAt:
-		return m.UpdatedAt()
 	}
 	return nil, false
 }
@@ -464,10 +380,6 @@ func (m *AccessMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldEntryAt(ctx)
 	case access.FieldExitAt:
 		return m.OldExitAt(ctx)
-	case access.FieldCreatedAt:
-		return m.OldCreatedAt(ctx)
-	case access.FieldUpdatedAt:
-		return m.OldUpdatedAt(ctx)
 	}
 	return nil, fmt.Errorf("unknown Access field %s", name)
 }
@@ -504,20 +416,6 @@ func (m *AccessMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetExitAt(v)
-		return nil
-	case access.FieldCreatedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCreatedAt(v)
-		return nil
-	case access.FieldUpdatedAt:
-		v, ok := value.(time.Time)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUpdatedAt(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Access field %s", name)
@@ -588,12 +486,6 @@ func (m *AccessMutation) ResetField(name string) error {
 		return nil
 	case access.FieldExitAt:
 		m.ResetExitAt()
-		return nil
-	case access.FieldCreatedAt:
-		m.ResetCreatedAt()
-		return nil
-	case access.FieldUpdatedAt:
-		m.ResetUpdatedAt()
 		return nil
 	}
 	return fmt.Errorf("unknown Access field %s", name)

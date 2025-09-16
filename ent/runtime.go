@@ -3,7 +3,6 @@
 package ent
 
 import (
-	"spl-access/ent/access"
 	"spl-access/ent/schema"
 	"spl-access/ent/user"
 	"time"
@@ -13,18 +12,6 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
-	accessFields := schema.Access{}.Fields()
-	_ = accessFields
-	// accessDescCreatedAt is the schema descriptor for created_at field.
-	accessDescCreatedAt := accessFields[4].Descriptor()
-	// access.DefaultCreatedAt holds the default value on creation for the created_at field.
-	access.DefaultCreatedAt = accessDescCreatedAt.Default.(func() time.Time)
-	// accessDescUpdatedAt is the schema descriptor for updated_at field.
-	accessDescUpdatedAt := accessFields[5].Descriptor()
-	// access.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	access.DefaultUpdatedAt = accessDescUpdatedAt.Default.(func() time.Time)
-	// access.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	access.UpdateDefaultUpdatedAt = accessDescUpdatedAt.UpdateDefault.(func() time.Time)
 	userFields := schema.User{}.Fields()
 	_ = userFields
 	// userDescCreatedAt is the schema descriptor for created_at field.

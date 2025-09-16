@@ -48,48 +48,10 @@ func (a *AccessService) UpdateOrCreateAccess(ctx context.Context, access []*dto.
 		return entry.ExternalId + entry.Location + entry.EntryAt.String()
 	})
 
-	var accessErr, userErr error
-	var wg sync.WaitGroup
+	accessErr := a.accessRepository.UpdateOrCreateAccess(ctx, cleanedAccess)
 
-	wg.Add(2)
-
-	go func() {
-		defer wg.Done()
-		accessErr = a.accessRepository.UpdateOrCreateAccess(ctx, cleanedAccess)
-	}()
-
-	// CheckUsers in goroutine
-	go func() {
-		defer wg.Done()
-		// Check Users
-		var userMap = make(map[string]dto.UserDto)
-		for _, accessItem := range cleanedAccess {
-			if _, exists := userMap[accessItem.ExternalId]; !exists {
-				userMap[accessItem.ExternalId] = dto.UserDto{
-					Run:        accessItem.Run,
-					ExternalId: accessItem.ExternalId,
-					FullName:   accessItem.FullName,
-				}
-			}
-		}
-
-		var users []*dto.UserDto
-		for _, user := range userMap {
-			users = append(users, &user)
-		}
-
-		userErr = a.userRepository.CheckUsers(ctx, users)
-	}()
-
-	// Wait for both operations to complete
-	wg.Wait()
-
-	// Check errors
 	if accessErr != nil {
 		return accessErr
-	}
-	if userErr != nil {
-		return userErr
 	}
 
 	go a.UpdateAccess(ctx)

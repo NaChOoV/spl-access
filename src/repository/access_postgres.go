@@ -11,7 +11,6 @@ import (
 
 type PostgresAccess struct {
 	conn *ent.Client
-	ctx  *context.Context
 
 	userRepository UserRepository
 }
@@ -23,7 +22,6 @@ func NewPostgresAccess(
 ) *PostgresAccess {
 	return &PostgresAccess{
 		conn:           conn,
-		ctx:            ctx,
 		userRepository: userRepository,
 	}
 }
@@ -47,7 +45,7 @@ func (a *PostgresAccess) UpdateOrCreateAccess(ctx context.Context, access []*dto
 		users = append(users, &user)
 	}
 
-	tx, err := a.conn.Tx(*a.ctx)
+	tx, err := a.conn.Tx(ctx)
 	if err != nil {
 		return err
 	}
@@ -63,13 +61,9 @@ func (a *PostgresAccess) UpdateOrCreateAccess(ctx context.Context, access []*dto
 			Create().
 			SetRun(access.Run).
 			SetEntryAt(access.EntryAt).
+			SetNillableExitAt(access.ExitAt).
 			SetLocation(entAccess.Location(access.Location))
 
-		if access.ExitAt.IsZero() {
-			accessCreate.SetNillableExitAt(nil)
-		} else {
-			accessCreate.SetExitAt(*access.ExitAt)
-		}
 		accessToBulk[i] = accessCreate
 
 	}
@@ -78,7 +72,7 @@ func (a *PostgresAccess) UpdateOrCreateAccess(ctx context.Context, access []*dto
 		CreateBulk(accessToBulk...).
 		OnConflictColumns("run", "location", "entry_at").
 		UpdateNewValues().
-		Exec(*a.ctx)
+		Exec(ctx)
 
 	if err != nil {
 		tx.Rollback()
@@ -89,34 +83,41 @@ func (a *PostgresAccess) UpdateOrCreateAccess(ctx context.Context, access []*dto
 	return nil
 }
 
-func (a *PostgresAccess) GetAccess() (*[]model.Access, error) {
-	sqlFile, err := os.ReadFile("src/repository/sql/access_query.sql")
+func (a *PostgresAccess) GetAccess(ctx context.Context, complete bool) ([]*model.Access, error) {
+	filePath := "src/repository/sql/get_access_query.sql"
+	if complete {
+		filePath = "src/repository/sql/get_access_query_complete.sql"
+	}
+
+	sqlFile, err := os.ReadFile(filePath)
 	if err != nil {
 		return nil, err
 	}
-	query, err := a.conn.QueryContext(*a.ctx, string(sqlFile))
+	query, err := a.conn.QueryContext(ctx, string(sqlFile))
 	if err != nil {
 		return nil, err
 	}
 	defer query.Close()
 
-	var accesses []model.Access
+	var accesses []*model.Access
 	for query.Next() {
 		var access model.Access
 		if err := query.Scan(
+			&access.ExternalId,
 			&access.Run,
 			&access.FullName,
 			&access.EntryAt,
+			&access.ExitAt,
 			&access.Location,
 		); err != nil {
 			return nil, err
 		}
-		accesses = append(accesses, access)
+		accesses = append(accesses, &access)
 	}
 
 	if err := query.Err(); err != nil {
 		return nil, err
 	}
 
-	return &accesses, nil
+	return accesses, nil
 }

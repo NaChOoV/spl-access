@@ -19,17 +19,17 @@ import (
 func main() {
 	fx.New(
 		// Setup database
-		fx.Provide(db.CreateBigQueryConnection),
+		fx.Provide(db.CreatePostgresConnection),
 		// Setup repository
 		fx.Provide(
 			fx.Annotate(
-				repository.NewBigQueryAccess,
+				repository.NewPostgresAccess,
 				fx.As(new(repository.AccessRepository)),
 			),
 		),
 		fx.Provide(
 			fx.Annotate(
-				repository.NewBigQueryUser,
+				repository.NewUserPostgres,
 				fx.As(new(repository.UserRepository)),
 			),
 		),

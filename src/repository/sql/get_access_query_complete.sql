@@ -1,14 +1,15 @@
 WITH RankedAccess AS (SELECT run,
                              entry_at,
+                             exit_at,
                              location,
                              ROW_NUMBER() OVER (PARTITION BY run, location ORDER BY entry_at DESC) AS rn
                       FROM access
-                      WHERE exit_at IS NULL
-                        AND entry_at + INTERVAL '2.5 hours' >= NOW()
                       GROUP BY run, entry_at, exit_at, location)
-SELECT "user".run,
+SELECT external_id,
+       "user".run,
        "user".full_name,
        entry_at,
+       exit_at,
        location
 FROM RankedAccess
          INNER JOIN "user" on "user".run = RankedAccess.run

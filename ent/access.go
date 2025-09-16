@@ -24,11 +24,7 @@ type Access struct {
 	// EntryAt holds the value of the "entry_at" field.
 	EntryAt time.Time `json:"entry_at,omitempty"`
 	// ExitAt holds the value of the "exit_at" field.
-	ExitAt time.Time `json:"exit_at,omitempty"`
-	// CreatedAt holds the value of the "created_at" field.
-	CreatedAt time.Time `json:"created_at,omitempty"`
-	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt    time.Time `json:"updated_at,omitempty"`
+	ExitAt       time.Time `json:"exit_at,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -41,7 +37,7 @@ func (*Access) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case access.FieldRun, access.FieldLocation:
 			values[i] = new(sql.NullString)
-		case access.FieldEntryAt, access.FieldExitAt, access.FieldCreatedAt, access.FieldUpdatedAt:
+		case access.FieldEntryAt, access.FieldExitAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -52,7 +48,7 @@ func (*Access) scanValues(columns []string) ([]any, error) {
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
 // to the Access fields.
-func (a *Access) assignValues(columns []string, values []any) error {
+func (_m *Access) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -63,45 +59,33 @@ func (a *Access) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			a.ID = int(value.Int64)
+			_m.ID = int(value.Int64)
 		case access.FieldRun:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field run", values[i])
 			} else if value.Valid {
-				a.Run = value.String
+				_m.Run = value.String
 			}
 		case access.FieldLocation:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field location", values[i])
 			} else if value.Valid {
-				a.Location = access.Location(value.String)
+				_m.Location = access.Location(value.String)
 			}
 		case access.FieldEntryAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field entry_at", values[i])
 			} else if value.Valid {
-				a.EntryAt = value.Time
+				_m.EntryAt = value.Time
 			}
 		case access.FieldExitAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field exit_at", values[i])
 			} else if value.Valid {
-				a.ExitAt = value.Time
-			}
-		case access.FieldCreatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field created_at", values[i])
-			} else if value.Valid {
-				a.CreatedAt = value.Time
-			}
-		case access.FieldUpdatedAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
-			} else if value.Valid {
-				a.UpdatedAt = value.Time
+				_m.ExitAt = value.Time
 			}
 		default:
-			a.selectValues.Set(columns[i], values[i])
+			_m.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
@@ -109,50 +93,44 @@ func (a *Access) assignValues(columns []string, values []any) error {
 
 // Value returns the ent.Value that was dynamically selected and assigned to the Access.
 // This includes values selected through modifiers, order, etc.
-func (a *Access) Value(name string) (ent.Value, error) {
-	return a.selectValues.Get(name)
+func (_m *Access) Value(name string) (ent.Value, error) {
+	return _m.selectValues.Get(name)
 }
 
 // Update returns a builder for updating this Access.
 // Note that you need to call Access.Unwrap() before calling this method if this Access
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (a *Access) Update() *AccessUpdateOne {
-	return NewAccessClient(a.config).UpdateOne(a)
+func (_m *Access) Update() *AccessUpdateOne {
+	return NewAccessClient(_m.config).UpdateOne(_m)
 }
 
 // Unwrap unwraps the Access entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (a *Access) Unwrap() *Access {
-	_tx, ok := a.config.driver.(*txDriver)
+func (_m *Access) Unwrap() *Access {
+	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
 		panic("ent: Access is not a transactional entity")
 	}
-	a.config.driver = _tx.drv
-	return a
+	_m.config.driver = _tx.drv
+	return _m
 }
 
 // String implements the fmt.Stringer.
-func (a *Access) String() string {
+func (_m *Access) String() string {
 	var builder strings.Builder
 	builder.WriteString("Access(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", a.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("run=")
-	builder.WriteString(a.Run)
+	builder.WriteString(_m.Run)
 	builder.WriteString(", ")
 	builder.WriteString("location=")
-	builder.WriteString(fmt.Sprintf("%v", a.Location))
+	builder.WriteString(fmt.Sprintf("%v", _m.Location))
 	builder.WriteString(", ")
 	builder.WriteString("entry_at=")
-	builder.WriteString(a.EntryAt.Format(time.ANSIC))
+	builder.WriteString(_m.EntryAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("exit_at=")
-	builder.WriteString(a.ExitAt.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("created_at=")
-	builder.WriteString(a.CreatedAt.Format(time.ANSIC))
-	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(a.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.ExitAt.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }
