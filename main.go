@@ -69,7 +69,7 @@ func main() {
 						return
 					}
 				}),
-				gocron.WithSingletonMode(gocron.LimitModeReschedule),
+				gocron.WithSingletonMode(gocron.LimitModeWait),
 			)
 
 			s.Start()
