@@ -22,9 +22,9 @@ type AccessCreate struct {
 	conflict []sql.ConflictOption
 }
 
-// SetRun sets the "run" field.
-func (_c *AccessCreate) SetRun(v string) *AccessCreate {
-	_c.mutation.SetRun(v)
+// SetExternalID sets the "external_id" field.
+func (_c *AccessCreate) SetExternalID(v string) *AccessCreate {
+	_c.mutation.SetExternalID(v)
 	return _c
 }
 
@@ -88,8 +88,8 @@ func (_c *AccessCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (_c *AccessCreate) check() error {
-	if _, ok := _c.mutation.Run(); !ok {
-		return &ValidationError{Name: "run", err: errors.New(`ent: missing required field "Access.run"`)}
+	if _, ok := _c.mutation.ExternalID(); !ok {
+		return &ValidationError{Name: "external_id", err: errors.New(`ent: missing required field "Access.external_id"`)}
 	}
 	if _, ok := _c.mutation.Location(); !ok {
 		return &ValidationError{Name: "location", err: errors.New(`ent: missing required field "Access.location"`)}
@@ -129,9 +129,9 @@ func (_c *AccessCreate) createSpec() (*Access, *sqlgraph.CreateSpec) {
 		_spec = sqlgraph.NewCreateSpec(access.Table, sqlgraph.NewFieldSpec(access.FieldID, field.TypeInt))
 	)
 	_spec.OnConflict = _c.conflict
-	if value, ok := _c.mutation.Run(); ok {
-		_spec.SetField(access.FieldRun, field.TypeString, value)
-		_node.Run = value
+	if value, ok := _c.mutation.ExternalID(); ok {
+		_spec.SetField(access.FieldExternalID, field.TypeString, value)
+		_node.ExternalID = value
 	}
 	if value, ok := _c.mutation.Location(); ok {
 		_spec.SetField(access.FieldLocation, field.TypeEnum, value)
@@ -152,7 +152,7 @@ func (_c *AccessCreate) createSpec() (*Access, *sqlgraph.CreateSpec) {
 // of the `INSERT` statement. For example:
 //
 //	client.Access.Create().
-//		SetRun(v).
+//		SetExternalID(v).
 //		OnConflict(
 //			// Update the row with the new values
 //			// the was proposed for insertion.
@@ -161,7 +161,7 @@ func (_c *AccessCreate) createSpec() (*Access, *sqlgraph.CreateSpec) {
 //		// Override some of the fields with custom
 //		// update values.
 //		Update(func(u *ent.AccessUpsert) {
-//			SetRun(v+v).
+//			SetExternalID(v+v).
 //		}).
 //		Exec(ctx)
 func (_c *AccessCreate) OnConflict(opts ...sql.ConflictOption) *AccessUpsertOne {
@@ -197,15 +197,15 @@ type (
 	}
 )
 
-// SetRun sets the "run" field.
-func (u *AccessUpsert) SetRun(v string) *AccessUpsert {
-	u.Set(access.FieldRun, v)
+// SetExternalID sets the "external_id" field.
+func (u *AccessUpsert) SetExternalID(v string) *AccessUpsert {
+	u.Set(access.FieldExternalID, v)
 	return u
 }
 
-// UpdateRun sets the "run" field to the value that was provided on create.
-func (u *AccessUpsert) UpdateRun() *AccessUpsert {
-	u.SetExcluded(access.FieldRun)
+// UpdateExternalID sets the "external_id" field to the value that was provided on create.
+func (u *AccessUpsert) UpdateExternalID() *AccessUpsert {
+	u.SetExcluded(access.FieldExternalID)
 	return u
 }
 
@@ -291,17 +291,17 @@ func (u *AccessUpsertOne) Update(set func(*AccessUpsert)) *AccessUpsertOne {
 	return u
 }
 
-// SetRun sets the "run" field.
-func (u *AccessUpsertOne) SetRun(v string) *AccessUpsertOne {
+// SetExternalID sets the "external_id" field.
+func (u *AccessUpsertOne) SetExternalID(v string) *AccessUpsertOne {
 	return u.Update(func(s *AccessUpsert) {
-		s.SetRun(v)
+		s.SetExternalID(v)
 	})
 }
 
-// UpdateRun sets the "run" field to the value that was provided on create.
-func (u *AccessUpsertOne) UpdateRun() *AccessUpsertOne {
+// UpdateExternalID sets the "external_id" field to the value that was provided on create.
+func (u *AccessUpsertOne) UpdateExternalID() *AccessUpsertOne {
 	return u.Update(func(s *AccessUpsert) {
-		s.UpdateRun()
+		s.UpdateExternalID()
 	})
 }
 
@@ -488,7 +488,7 @@ func (_c *AccessCreateBulk) ExecX(ctx context.Context) {
 //		// Override some of the fields with custom
 //		// update values.
 //		Update(func(u *ent.AccessUpsert) {
-//			SetRun(v+v).
+//			SetExternalID(v+v).
 //		}).
 //		Exec(ctx)
 func (_c *AccessCreateBulk) OnConflict(opts ...sql.ConflictOption) *AccessUpsertBulk {
@@ -557,17 +557,17 @@ func (u *AccessUpsertBulk) Update(set func(*AccessUpsert)) *AccessUpsertBulk {
 	return u
 }
 
-// SetRun sets the "run" field.
-func (u *AccessUpsertBulk) SetRun(v string) *AccessUpsertBulk {
+// SetExternalID sets the "external_id" field.
+func (u *AccessUpsertBulk) SetExternalID(v string) *AccessUpsertBulk {
 	return u.Update(func(s *AccessUpsert) {
-		s.SetRun(v)
+		s.SetExternalID(v)
 	})
 }
 
-// UpdateRun sets the "run" field to the value that was provided on create.
-func (u *AccessUpsertBulk) UpdateRun() *AccessUpsertBulk {
+// UpdateExternalID sets the "external_id" field to the value that was provided on create.
+func (u *AccessUpsertBulk) UpdateExternalID() *AccessUpsertBulk {
 	return u.Update(func(s *AccessUpsert) {
-		s.UpdateRun()
+		s.UpdateExternalID()
 	})
 }
 

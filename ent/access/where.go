@@ -54,9 +54,9 @@ func IDLTE(id int) predicate.Access {
 	return predicate.Access(sql.FieldLTE(FieldID, id))
 }
 
-// Run applies equality check predicate on the "run" field. It's identical to RunEQ.
-func Run(v string) predicate.Access {
-	return predicate.Access(sql.FieldEQ(FieldRun, v))
+// ExternalID applies equality check predicate on the "external_id" field. It's identical to ExternalIDEQ.
+func ExternalID(v string) predicate.Access {
+	return predicate.Access(sql.FieldEQ(FieldExternalID, v))
 }
 
 // EntryAt applies equality check predicate on the "entry_at" field. It's identical to EntryAtEQ.
@@ -69,69 +69,69 @@ func ExitAt(v time.Time) predicate.Access {
 	return predicate.Access(sql.FieldEQ(FieldExitAt, v))
 }
 
-// RunEQ applies the EQ predicate on the "run" field.
-func RunEQ(v string) predicate.Access {
-	return predicate.Access(sql.FieldEQ(FieldRun, v))
+// ExternalIDEQ applies the EQ predicate on the "external_id" field.
+func ExternalIDEQ(v string) predicate.Access {
+	return predicate.Access(sql.FieldEQ(FieldExternalID, v))
 }
 
-// RunNEQ applies the NEQ predicate on the "run" field.
-func RunNEQ(v string) predicate.Access {
-	return predicate.Access(sql.FieldNEQ(FieldRun, v))
+// ExternalIDNEQ applies the NEQ predicate on the "external_id" field.
+func ExternalIDNEQ(v string) predicate.Access {
+	return predicate.Access(sql.FieldNEQ(FieldExternalID, v))
 }
 
-// RunIn applies the In predicate on the "run" field.
-func RunIn(vs ...string) predicate.Access {
-	return predicate.Access(sql.FieldIn(FieldRun, vs...))
+// ExternalIDIn applies the In predicate on the "external_id" field.
+func ExternalIDIn(vs ...string) predicate.Access {
+	return predicate.Access(sql.FieldIn(FieldExternalID, vs...))
 }
 
-// RunNotIn applies the NotIn predicate on the "run" field.
-func RunNotIn(vs ...string) predicate.Access {
-	return predicate.Access(sql.FieldNotIn(FieldRun, vs...))
+// ExternalIDNotIn applies the NotIn predicate on the "external_id" field.
+func ExternalIDNotIn(vs ...string) predicate.Access {
+	return predicate.Access(sql.FieldNotIn(FieldExternalID, vs...))
 }
 
-// RunGT applies the GT predicate on the "run" field.
-func RunGT(v string) predicate.Access {
-	return predicate.Access(sql.FieldGT(FieldRun, v))
+// ExternalIDGT applies the GT predicate on the "external_id" field.
+func ExternalIDGT(v string) predicate.Access {
+	return predicate.Access(sql.FieldGT(FieldExternalID, v))
 }
 
-// RunGTE applies the GTE predicate on the "run" field.
-func RunGTE(v string) predicate.Access {
-	return predicate.Access(sql.FieldGTE(FieldRun, v))
+// ExternalIDGTE applies the GTE predicate on the "external_id" field.
+func ExternalIDGTE(v string) predicate.Access {
+	return predicate.Access(sql.FieldGTE(FieldExternalID, v))
 }
 
-// RunLT applies the LT predicate on the "run" field.
-func RunLT(v string) predicate.Access {
-	return predicate.Access(sql.FieldLT(FieldRun, v))
+// ExternalIDLT applies the LT predicate on the "external_id" field.
+func ExternalIDLT(v string) predicate.Access {
+	return predicate.Access(sql.FieldLT(FieldExternalID, v))
 }
 
-// RunLTE applies the LTE predicate on the "run" field.
-func RunLTE(v string) predicate.Access {
-	return predicate.Access(sql.FieldLTE(FieldRun, v))
+// ExternalIDLTE applies the LTE predicate on the "external_id" field.
+func ExternalIDLTE(v string) predicate.Access {
+	return predicate.Access(sql.FieldLTE(FieldExternalID, v))
 }
 
-// RunContains applies the Contains predicate on the "run" field.
-func RunContains(v string) predicate.Access {
-	return predicate.Access(sql.FieldContains(FieldRun, v))
+// ExternalIDContains applies the Contains predicate on the "external_id" field.
+func ExternalIDContains(v string) predicate.Access {
+	return predicate.Access(sql.FieldContains(FieldExternalID, v))
 }
 
-// RunHasPrefix applies the HasPrefix predicate on the "run" field.
-func RunHasPrefix(v string) predicate.Access {
-	return predicate.Access(sql.FieldHasPrefix(FieldRun, v))
+// ExternalIDHasPrefix applies the HasPrefix predicate on the "external_id" field.
+func ExternalIDHasPrefix(v string) predicate.Access {
+	return predicate.Access(sql.FieldHasPrefix(FieldExternalID, v))
 }
 
-// RunHasSuffix applies the HasSuffix predicate on the "run" field.
-func RunHasSuffix(v string) predicate.Access {
-	return predicate.Access(sql.FieldHasSuffix(FieldRun, v))
+// ExternalIDHasSuffix applies the HasSuffix predicate on the "external_id" field.
+func ExternalIDHasSuffix(v string) predicate.Access {
+	return predicate.Access(sql.FieldHasSuffix(FieldExternalID, v))
 }
 
-// RunEqualFold applies the EqualFold predicate on the "run" field.
-func RunEqualFold(v string) predicate.Access {
-	return predicate.Access(sql.FieldEqualFold(FieldRun, v))
+// ExternalIDEqualFold applies the EqualFold predicate on the "external_id" field.
+func ExternalIDEqualFold(v string) predicate.Access {
+	return predicate.Access(sql.FieldEqualFold(FieldExternalID, v))
 }
 
-// RunContainsFold applies the ContainsFold predicate on the "run" field.
-func RunContainsFold(v string) predicate.Access {
-	return predicate.Access(sql.FieldContainsFold(FieldRun, v))
+// ExternalIDContainsFold applies the ContainsFold predicate on the "external_id" field.
+func ExternalIDContainsFold(v string) predicate.Access {
+	return predicate.Access(sql.FieldContainsFold(FieldExternalID, v))
 }
 
 // LocationEQ applies the EQ predicate on the "location" field.

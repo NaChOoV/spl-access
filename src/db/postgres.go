@@ -40,7 +40,12 @@ func CreatePostgresConnection(lc fx.Lifecycle, envConfig *config.EnvironmentConf
 			return nil
 		},
 		OnStop: func(context.Context) error {
-			conn.Close()
+			err := conn.Close()
+			if err != nil {
+				fmt.Printf("Error closing the database connection: %v", err)
+				return err
+			}
+			fmt.Println("Database connection closed.")
 			return nil
 		},
 	})

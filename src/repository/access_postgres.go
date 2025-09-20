@@ -59,7 +59,7 @@ func (a *PostgresAccess) UpdateOrCreateAccess(ctx context.Context, access []*dto
 	for i, access := range access {
 		accessCreate := a.conn.Access.
 			Create().
-			SetRun(access.Run).
+			SetExternalID(access.ExternalId).
 			SetEntryAt(access.EntryAt).
 			SetNillableExitAt(access.ExitAt).
 			SetLocation(entAccess.Location(access.Location))
@@ -68,10 +68,14 @@ func (a *PostgresAccess) UpdateOrCreateAccess(ctx context.Context, access []*dto
 
 	}
 
+	_, err = tx.QueryContext(ctx, "TRUNCATE TABLE access;")
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
 	err = tx.Access.
 		CreateBulk(accessToBulk...).
-		OnConflictColumns("run", "location", "entry_at").
-		UpdateNewValues().
 		Exec(ctx)
 
 	if err != nil {

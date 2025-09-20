@@ -12,7 +12,7 @@ var (
 	// AccessColumns holds the columns for the "access" table.
 	AccessColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "run", Type: field.TypeString},
+		{Name: "external_id", Type: field.TypeString},
 		{Name: "location", Type: field.TypeEnum, Enums: []string{"102", "104", "105", "106", "107", "108"}},
 		{Name: "entry_at", Type: field.TypeTime},
 		{Name: "exit_at", Type: field.TypeTime, Nullable: true},
@@ -24,7 +24,7 @@ var (
 		PrimaryKey: []*schema.Column{AccessColumns[0]},
 		Indexes: []*schema.Index{
 			{
-				Name:    "access_run_location_entry_at",
+				Name:    "access_external_id_location_entry_at",
 				Unique:  true,
 				Columns: []*schema.Column{AccessColumns[1], AccessColumns[2], AccessColumns[3]},
 			},

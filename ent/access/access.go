@@ -13,8 +13,8 @@ const (
 	Label = "access"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldRun holds the string denoting the run field in the database.
-	FieldRun = "run"
+	// FieldExternalID holds the string denoting the external_id field in the database.
+	FieldExternalID = "external_id"
 	// FieldLocation holds the string denoting the location field in the database.
 	FieldLocation = "location"
 	// FieldEntryAt holds the string denoting the entry_at field in the database.
@@ -28,7 +28,7 @@ const (
 // Columns holds all SQL columns for access fields.
 var Columns = []string{
 	FieldID,
-	FieldRun,
+	FieldExternalID,
 	FieldLocation,
 	FieldEntryAt,
 	FieldExitAt,
@@ -79,9 +79,9 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByRun orders the results by the run field.
-func ByRun(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldRun, opts...).ToFunc()
+// ByExternalID orders the results by the external_id field.
+func ByExternalID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldExternalID, opts...).ToFunc()
 }
 
 // ByLocation orders the results by the location field.

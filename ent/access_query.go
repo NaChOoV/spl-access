@@ -262,12 +262,12 @@ func (_q *AccessQuery) Clone() *AccessQuery {
 // Example:
 //
 //	var v []struct {
-//		Run string `json:"run,omitempty"`
+//		ExternalID string `json:"external_id,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Access.Query().
-//		GroupBy(access.FieldRun).
+//		GroupBy(access.FieldExternalID).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (_q *AccessQuery) GroupBy(field string, fields ...string) *AccessGroupBy {
@@ -285,11 +285,11 @@ func (_q *AccessQuery) GroupBy(field string, fields ...string) *AccessGroupBy {
 // Example:
 //
 //	var v []struct {
-//		Run string `json:"run,omitempty"`
+//		ExternalID string `json:"external_id,omitempty"`
 //	}
 //
 //	client.Access.Query().
-//		Select(access.FieldRun).
+//		Select(access.FieldExternalID).
 //		Scan(ctx, &v)
 func (_q *AccessQuery) Select(fields ...string) *AccessSelect {
 	_q.ctx.Fields = append(_q.ctx.Fields, fields...)

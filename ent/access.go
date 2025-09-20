@@ -17,8 +17,8 @@ type Access struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
-	// Run holds the value of the "run" field.
-	Run string `json:"run,omitempty"`
+	// ExternalID holds the value of the "external_id" field.
+	ExternalID string `json:"external_id,omitempty"`
 	// Location holds the value of the "location" field.
 	Location access.Location `json:"location,omitempty"`
 	// EntryAt holds the value of the "entry_at" field.
@@ -35,7 +35,7 @@ func (*Access) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case access.FieldID:
 			values[i] = new(sql.NullInt64)
-		case access.FieldRun, access.FieldLocation:
+		case access.FieldExternalID, access.FieldLocation:
 			values[i] = new(sql.NullString)
 		case access.FieldEntryAt, access.FieldExitAt:
 			values[i] = new(sql.NullTime)
@@ -60,11 +60,11 @@ func (_m *Access) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			_m.ID = int(value.Int64)
-		case access.FieldRun:
+		case access.FieldExternalID:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field run", values[i])
+				return fmt.Errorf("unexpected type %T for field external_id", values[i])
 			} else if value.Valid {
-				_m.Run = value.String
+				_m.ExternalID = value.String
 			}
 		case access.FieldLocation:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -120,8 +120,8 @@ func (_m *Access) String() string {
 	var builder strings.Builder
 	builder.WriteString("Access(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
-	builder.WriteString("run=")
-	builder.WriteString(_m.Run)
+	builder.WriteString("external_id=")
+	builder.WriteString(_m.ExternalID)
 	builder.WriteString(", ")
 	builder.WriteString("location=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Location))

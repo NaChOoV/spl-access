@@ -35,7 +35,7 @@ type AccessMutation struct {
 	op            Op
 	typ           string
 	id            *int
-	run           *string
+	external_id   *string
 	location      *access.Location
 	entry_at      *time.Time
 	exit_at       *time.Time
@@ -143,40 +143,40 @@ func (m *AccessMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
-// SetRun sets the "run" field.
-func (m *AccessMutation) SetRun(s string) {
-	m.run = &s
+// SetExternalID sets the "external_id" field.
+func (m *AccessMutation) SetExternalID(s string) {
+	m.external_id = &s
 }
 
-// Run returns the value of the "run" field in the mutation.
-func (m *AccessMutation) Run() (r string, exists bool) {
-	v := m.run
+// ExternalID returns the value of the "external_id" field in the mutation.
+func (m *AccessMutation) ExternalID() (r string, exists bool) {
+	v := m.external_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldRun returns the old "run" field's value of the Access entity.
+// OldExternalID returns the old "external_id" field's value of the Access entity.
 // If the Access object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *AccessMutation) OldRun(ctx context.Context) (v string, err error) {
+func (m *AccessMutation) OldExternalID(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldRun is only allowed on UpdateOne operations")
+		return v, errors.New("OldExternalID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldRun requires an ID field in the mutation")
+		return v, errors.New("OldExternalID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldRun: %w", err)
+		return v, fmt.Errorf("querying old value for OldExternalID: %w", err)
 	}
-	return oldValue.Run, nil
+	return oldValue.ExternalID, nil
 }
 
-// ResetRun resets all changes to the "run" field.
-func (m *AccessMutation) ResetRun() {
-	m.run = nil
+// ResetExternalID resets all changes to the "external_id" field.
+func (m *AccessMutation) ResetExternalID() {
+	m.external_id = nil
 }
 
 // SetLocation sets the "location" field.
@@ -335,8 +335,8 @@ func (m *AccessMutation) Type() string {
 // AddedFields().
 func (m *AccessMutation) Fields() []string {
 	fields := make([]string, 0, 4)
-	if m.run != nil {
-		fields = append(fields, access.FieldRun)
+	if m.external_id != nil {
+		fields = append(fields, access.FieldExternalID)
 	}
 	if m.location != nil {
 		fields = append(fields, access.FieldLocation)
@@ -355,8 +355,8 @@ func (m *AccessMutation) Fields() []string {
 // schema.
 func (m *AccessMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case access.FieldRun:
-		return m.Run()
+	case access.FieldExternalID:
+		return m.ExternalID()
 	case access.FieldLocation:
 		return m.Location()
 	case access.FieldEntryAt:
@@ -372,8 +372,8 @@ func (m *AccessMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *AccessMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case access.FieldRun:
-		return m.OldRun(ctx)
+	case access.FieldExternalID:
+		return m.OldExternalID(ctx)
 	case access.FieldLocation:
 		return m.OldLocation(ctx)
 	case access.FieldEntryAt:
@@ -389,12 +389,12 @@ func (m *AccessMutation) OldField(ctx context.Context, name string) (ent.Value, 
 // type.
 func (m *AccessMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case access.FieldRun:
+	case access.FieldExternalID:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetRun(v)
+		m.SetExternalID(v)
 		return nil
 	case access.FieldLocation:
 		v, ok := value.(access.Location)
@@ -475,8 +475,8 @@ func (m *AccessMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *AccessMutation) ResetField(name string) error {
 	switch name {
-	case access.FieldRun:
-		m.ResetRun()
+	case access.FieldExternalID:
+		m.ResetExternalID()
 		return nil
 	case access.FieldLocation:
 		m.ResetLocation()

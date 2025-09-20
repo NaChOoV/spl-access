@@ -28,16 +28,16 @@ func (_u *AccessUpdate) Where(ps ...predicate.Access) *AccessUpdate {
 	return _u
 }
 
-// SetRun sets the "run" field.
-func (_u *AccessUpdate) SetRun(v string) *AccessUpdate {
-	_u.mutation.SetRun(v)
+// SetExternalID sets the "external_id" field.
+func (_u *AccessUpdate) SetExternalID(v string) *AccessUpdate {
+	_u.mutation.SetExternalID(v)
 	return _u
 }
 
-// SetNillableRun sets the "run" field if the given value is not nil.
-func (_u *AccessUpdate) SetNillableRun(v *string) *AccessUpdate {
+// SetNillableExternalID sets the "external_id" field if the given value is not nil.
+func (_u *AccessUpdate) SetNillableExternalID(v *string) *AccessUpdate {
 	if v != nil {
-		_u.SetRun(*v)
+		_u.SetExternalID(*v)
 	}
 	return _u
 }
@@ -144,8 +144,8 @@ func (_u *AccessUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 			}
 		}
 	}
-	if value, ok := _u.mutation.Run(); ok {
-		_spec.SetField(access.FieldRun, field.TypeString, value)
+	if value, ok := _u.mutation.ExternalID(); ok {
+		_spec.SetField(access.FieldExternalID, field.TypeString, value)
 	}
 	if value, ok := _u.mutation.Location(); ok {
 		_spec.SetField(access.FieldLocation, field.TypeEnum, value)
@@ -179,16 +179,16 @@ type AccessUpdateOne struct {
 	mutation *AccessMutation
 }
 
-// SetRun sets the "run" field.
-func (_u *AccessUpdateOne) SetRun(v string) *AccessUpdateOne {
-	_u.mutation.SetRun(v)
+// SetExternalID sets the "external_id" field.
+func (_u *AccessUpdateOne) SetExternalID(v string) *AccessUpdateOne {
+	_u.mutation.SetExternalID(v)
 	return _u
 }
 
-// SetNillableRun sets the "run" field if the given value is not nil.
-func (_u *AccessUpdateOne) SetNillableRun(v *string) *AccessUpdateOne {
+// SetNillableExternalID sets the "external_id" field if the given value is not nil.
+func (_u *AccessUpdateOne) SetNillableExternalID(v *string) *AccessUpdateOne {
 	if v != nil {
-		_u.SetRun(*v)
+		_u.SetExternalID(*v)
 	}
 	return _u
 }
@@ -325,8 +325,8 @@ func (_u *AccessUpdateOne) sqlSave(ctx context.Context) (_node *Access, err erro
 			}
 		}
 	}
-	if value, ok := _u.mutation.Run(); ok {
-		_spec.SetField(access.FieldRun, field.TypeString, value)
+	if value, ok := _u.mutation.ExternalID(); ok {
+		_spec.SetField(access.FieldExternalID, field.TypeString, value)
 	}
 	if value, ok := _u.mutation.Location(); ok {
 		_spec.SetField(access.FieldLocation, field.TypeEnum, value)

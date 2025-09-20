@@ -34,7 +34,7 @@ func (Access) Annotations() []schema.Annotation {
 // Fields of the Access.
 func (Access) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("run"),
+		field.String("external_id"),
 		field.Enum("location").
 			Values(
 				string(ESPACIO_URBANO),
@@ -56,6 +56,6 @@ func (Access) Edges() []ent.Edge {
 
 func (Access) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("run", "location", "entry_at").Unique(),
+		index.Fields("external_id", "location", "entry_at").Unique(),
 	}
 }
